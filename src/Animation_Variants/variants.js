@@ -9,7 +9,9 @@ export const EnterFromTop = {
 
   export const EnterFromBottom = {
     show: (custom) => ({ transition: motion.spring.ui, y: `${custom}vh` }),
-    hidden: (custom) => ({ transition: motion.spring.ui, y: "100vh" })
+    hidden: (custom) => ({ transition: motion.spring.ui, y: "100vh" }),
+    exit: (custom) => ({ transition: { ...motion.spring.ui, delay: 0.6 }, opacity: 0
+    })
   };    
 
   export const EnterFromBottom_modal = {

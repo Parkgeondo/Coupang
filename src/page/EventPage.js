@@ -2,8 +2,9 @@ import FoodThumbnail from '../Component/FoodThumbnail';
 import CardSwape from '../Component/CardSwape';
 import Review from '../page/Review';
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect } from 'react';
+import SelectedToggles from '../page/SelectedToggles';
 
 const EventPage = () => {
     const [stage, setStage] = useState("swipe");
@@ -19,8 +20,12 @@ const EventPage = () => {
             transition={{ duration: 0.2 }}
         >
             <FoodThumbnail />
-            {stage === "swipe" && <CardSwape onComplete={() => setStage("review")} swipeData={swipeData} setSwipeData={setSwipeData} />}
-            {stage === "review" && <Review />}
+
+            {(stage === "review") && <Review />}
+            <AnimatePresence>
+                {stage === "swipe" && <CardSwape onComplete={() => setStage("review")} swipeData={swipeData} setSwipeData={setSwipeData} />}
+            </AnimatePresence>
+            {(stage === "review" || stage === "swipe") && <SelectedToggles />}
         </motion.div>
     )
 }

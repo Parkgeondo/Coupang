@@ -149,11 +149,12 @@ const CardSwape = ({ onComplete, swipeData, setSwipeData }) => {
     };
     
     return (
-        <motion.div className="w-[343px] h-[476px] rounded-[16px] bg-gradient-to-b from-[#00AFFE] to-[#0069CC] flex flex-col items-center [perspective:9000px] overflow-hidden"
+        <motion.div className="w-[343px] h-[476px] rounded-[16px] bg-gradient-to-b from-[#00AFFE] to-[#0069CC] flex flex-col items-center [perspective:9000px] overflow-hidden absolute"
             variants={EnterFromBottom}
             custom={30}
             initial="hidden"
             animate="show"
+            exit="exit"
         >
             <p className="text-white text-base font-bold text-center mt-[20px] relative">
                 <motion.div 
