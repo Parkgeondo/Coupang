@@ -38,16 +38,15 @@ const CATEGORIES = [
 ]
 
 //카드 컴포넌트
-const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onComplete, onSwipe }) => {
+const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onComplete, onSwipe, swipeData }) => {
     // 각 카드의 거리
     const DISTANCE = 200;
-
     // baseZ각 카드를 위치에 배분하는 함수
     const baseZ = index * DISTANCE;
-
     //카드의 X좌표 위치
     const x = useMotionValue(0);
-
+    //카드의 왼쪽 오른쪽 판별범위
+    const RANGE = 60;
 
     const handleDragEnd = (e, info) => {
         // dragX 카드를 드래그 하고 놓았을 시 카드의 X좌표 위치
@@ -57,7 +56,7 @@ const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onCo
         // dragX 카드를 튕기듯 스와이프 해도 카드가 움직이도록
         const swipePower = Math.abs(dragX) * velocityX;
 
-        if (dragX < -120) {
+        if (dragX < -RANGE) {
             console.log("✅ 왼쪽 스와이프");
             animate(x, -500, motionTokens.spring.ui);
             const categoryId = CATEGORIES[step_card].id;
@@ -68,7 +67,7 @@ const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onCo
                 onComplete();
             }
             return;
-        }else if (dragX > 120) {
+        }else if (dragX > RANGE) {
             console.log("✅ 오른쪽 스와이프");
             animate(x, 500, motionTokens.spring.ui);
             const categoryId = CATEGORIES[step_card].id;
@@ -85,6 +84,18 @@ const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onCo
             return;
         }
     }
+
+    const [dragLeftOrRight, setDragLeftOrRight] = useState('none');
+
+    useMotionValueEvent(x, 'change', (value) => {
+        if (value < -10) {
+            setDragLeftOrRight('left');
+        } else if (value > 10) {
+            setDragLeftOrRight('right');
+        }else {
+            setDragLeftOrRight('none');
+        }
+    });
 
     // 카드의 x 좌표에 따라서 회전값을 더해주는 함수
     const rotateCard = useTransform(x, [-120, 120], [-10, 10]);
@@ -103,8 +114,7 @@ const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onCo
         className="w-[290px] h-[439px] bg-gradient-to-b from-[#ECEEEE] to-[#DAE5E5]
                     rounded-[16px] px-4 py-4 absolute
                     shadow-[0px_-4px_0px_#FFFFFF]">
-        <TextUpandDown text={text} />
-        {/* <p className="text-[#15426C] text-[20px] font-bold text-center">{text[0]}</p> */}
+        <TextUpandDown text={text} swipeData={swipeData} dragLeftOrRight={dragLeftOrRight}/>
         <div className="w-full h-[280px] flex justify-center items-center mt-4">
             {useThree ? (
                 <ThreeScene />

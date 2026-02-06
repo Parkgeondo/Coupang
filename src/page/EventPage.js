@@ -10,10 +10,6 @@ const EventPage = () => {
     // 각 카드의 스와이프 방향 저장 ('left' | 'right')
     const [swipeData, setSwipeData] = useState([]);
 
-    useEffect(() => {
-        console.log(swipeData);
-    }, [swipeData]);
-
     return (
         <motion.div 
             className="z-50 absolute inset-0 flex flex-col items-center gap-4 overflow-hidden"
@@ -24,7 +20,7 @@ const EventPage = () => {
         >
             <FoodThumbnail />
             {stage === "swipe" && <CardSwape onComplete={() => setStage("review")} swipeData={swipeData} setSwipeData={setSwipeData} />}
-            {/* {stage === "review" && <Review />} */}
+            {stage === "review" && <Review />}
         </motion.div>
     )
 }

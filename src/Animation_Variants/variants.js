@@ -31,9 +31,28 @@ export const EnterFromTop = {
     variantSwipeX: (custom) => ({ transition: motion.spring.ui, x: custom }),
   };
 
-
-
-
+  export const textContainer = {
+    hidden: {},
+    show: {
+      transition: {
+        type: motion.spring.ui,
+        delayChildren: 0.07,
+        staggerChildren: 0.02,
+      },
+    },
+    exit: {
+      transition: {
+        type: motion.spring.ui,
+        staggerChildren: 0.02,
+      },
+    },
+  };
+  
+  export const textLetter = {
+    hidden: (d) => ({ y: -d, opacity: 0 }),
+    show: { y: 0, opacity: 1, transition: { duration: 0.18, ease: "easeOut" } },
+    exit: (d) => ({ y: d, opacity: 0, transition: { duration: 0.14, ease: "easeIn" } }),
+  };
   // ------------------------------------------------------------
   // ------------------------------------------------------------
 
