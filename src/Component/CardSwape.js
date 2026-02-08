@@ -59,8 +59,7 @@ const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onCo
         if (dragX < -RANGE) {
             console.log("✅ 왼쪽 스와이프");
             animate(x, -500, motionTokens.spring.ui);
-            const categoryId = CATEGORIES[step_card].id;
-            onSwipe(categoryId, 'left'); // 스와이프 데이터 저장
+            onSwipe(step_card, 'left'); // 스와이프 데이터 저장
             Zindex.set(Zindex.get() + DISTANCE);
             setStepCard(step_card + 1);
             if (step_card === CATEGORIES.length - 1) {
@@ -70,8 +69,7 @@ const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onCo
         }else if (dragX > RANGE) {
             console.log("✅ 오른쪽 스와이프");
             animate(x, 500, motionTokens.spring.ui);
-            const categoryId = CATEGORIES[step_card].id;
-            onSwipe(categoryId, 'right'); // 스와이프 데이터 저장
+            onSwipe(step_card, 'right'); // 스와이프 데이터 저장
             Zindex.set(Zindex.get() + DISTANCE);
             setStepCard(step_card + 1);
             if (step_card === CATEGORIES.length - 1) {
@@ -144,8 +142,12 @@ const CardSwape = ({ onComplete, swipeData, setSwipeData }) => {
     });
 
     // 스와이프 데이터 저장 핸들러
-    const handleSwipe = (categoryId, direction) => {
-        setSwipeData(prev => [...prev, { categoryId, direction }]);
+    const handleSwipe = (step_card, direction) => {
+        setSwipeData(prev => {
+            const newSwipeData = [...prev];
+            newSwipeData[step_card].direction = direction;
+            return newSwipeData;
+        });
     };
     
     return (
@@ -156,7 +158,7 @@ const CardSwape = ({ onComplete, swipeData, setSwipeData }) => {
             animate="show"
             exit="exit"
         >
-            <p className="text-white text-base font-bold text-center mt-[20px] relative">
+            <div className="text-white text-base font-bold text-center mt-[20px] relative">
                 <motion.div 
                     className="absolute top-[-8px] left-[44%] w-[55px]"
                     initial={{ opacity: 1 }}
@@ -186,8 +188,8 @@ const CardSwape = ({ onComplete, swipeData, setSwipeData }) => {
                         />
                     ))}
                 </motion.div>
-                카드를 옆으로 슬라이드 해주세요
-            </p>
+                <p>카드를 옆으로 슬라이드 해주세요</p>
+            </div>
             <div className="relative w-[290px] h-[439px]
                             [transform-style:preserve-3d]
                             [transform:translateY(33px)_translateZ(-600px)_rotateX(-4deg)]

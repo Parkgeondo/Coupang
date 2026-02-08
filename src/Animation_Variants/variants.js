@@ -33,6 +33,43 @@ export const EnterFromTop = {
     variantSwipeX: (custom) => ({ transition: motion.spring.ui, x: custom }),
   };
 
+  export const ToggleItem_animate = {
+    toggle_show: (custom) => {
+      const width = custom?.width+16 || 7;
+      const height = custom?.height+6 || 7;
+      const backgroundColor = '#ffffff';
+      return { 
+        transition: motion.elasticity.ui, 
+        width: width,
+        height: height,
+        backgroundColor: backgroundColor
+      };
+    },
+    toggle_hidden: (c) => ({
+      transition: motion.elasticity.ui,
+      width: 7,
+      height: 7,
+      backgroundColor: "#017BD9",
+      x: 0,
+      y: 0,
+    }),
+    toPosition: (custom) => {
+      const positionX = custom?.positionX || 0;
+      const positionY = custom?.positionY || 0;
+      const width = custom?.width+16 || 7;
+      const height = custom?.height+6 || 7;
+      const backgroundColor = '#ffffff';
+      return { 
+        transition: { ...motion.spring.ui, delay: 0},
+        x: positionX,
+        y: positionY,
+        width: width > 0 ? width : 7, 
+        height: height > 0 ? height : 7,
+        backgroundColor: backgroundColor
+      };
+    },
+  };
+
   export const textContainer = {
     hidden: {},
     show: {
