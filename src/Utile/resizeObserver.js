@@ -11,7 +11,6 @@ export function useResizeObserver() {
         const ro = new ResizeObserver(() => {
           const rect = el.getBoundingClientRect();
           setSize({ width: rect.width, height: rect.height });
-          console.log('Container Width:', rect.width, 'Height:', rect.height);
         });
     
         ro.observe(el);

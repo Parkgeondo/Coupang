@@ -60,12 +60,27 @@ export const EnterFromTop = {
       const height = custom?.height+6 || 7;
       const backgroundColor = '#ffffff';
       return { 
-        transition: { ...motion.spring.ui, delay: 0},
+        transition: {
+          x: { ...motion.spring.ui },
+          y: { ...motion.spring.ui },
+          width: { ...motion.spring.ui },
+          height: { ...motion.spring.ui },
+          backgroundColor: { ...motion.spring.ui },
+          opacity: { 
+            duration: 0.15, 
+            ease: "easeOut",
+            times: [0, 1],
+            // x, y 이동이 대략 80% 완료된 시점에 opacity가 변하도록 delay 설정
+            // spring 애니메이션의 대략적인 duration을 고려하여 delay 계산
+            delay: 0.4
+          }
+        },
         x: positionX,
         y: positionY,
         width: width > 0 ? width : 7, 
         height: height > 0 ? height : 7,
-        backgroundColor: backgroundColor
+        backgroundColor: backgroundColor,
+        opacity: 0
       };
     },
   };
@@ -92,6 +107,38 @@ export const EnterFromTop = {
     show: { y: 0, opacity: 1, transition: { duration: 0.18, ease: "easeOut" } },
     exit: (d) => ({ y: d, opacity: 0, transition: { duration: 0.14, ease: "easeIn" } }),
   };
+
+  export const skeleton_animate = {
+    show: {
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut"
+      }
+    },
+    hide: {
+      opacity: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeIn"
+      }
+    }
+  }
+
+  export const textarea_animate = {
+    hidden: {
+      opacity: 0,
+    },
+    show: {
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut"
+      }
+    }
+  }
+
+
   // ------------------------------------------------------------
   // ------------------------------------------------------------
 

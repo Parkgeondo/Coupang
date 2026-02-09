@@ -37,11 +37,12 @@ const EventPage = () => {
         >
             <FoodThumbnail />
 
-            {(stage === "review") && <Review />}
+            {(stage === "review") && <Review swipeData={swipeData} showSkeleton={true}/>}
             <AnimatePresence>
-                {stage === "swipe" && <CardSwape onComplete={() => setStage("review")} swipeData={swipeData} setSwipeData={setSwipeData} />}
+                {stage === "swipe" && <CardSwape onComplete={() => setStage("review")} swipeData={swipeData} setSwipeData={setSwipeData}/>}
             </AnimatePresence>
             {(stage === "review" || stage === "swipe") && <SelectedToggles swipeData={swipeData} stage={stage} />}
+
         </motion.div>
     )
 }
