@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import Lottie from 'lottie-react';
 import animationData from './Lottie/animation.json';
 import { useResizeObserver } from './Utile/resizeObserver';
-import { dimmedBackground, dimmedScale, EnterFromBottom_modal } from './Animation_Variants/variants';
+import { dimmedBackground, dimmedScale, EnterFromBottom_modal, button_animate } from './Animation_Variants/variants';
+import ThanksPage from './page/ThanksPage';
 
 // --- 데이터 (Mock Data) ---------------------------------------------------------------------------------------------------------------------------
 
@@ -204,7 +205,17 @@ const BottomNav = ({ stage }) => {
   );
 };
 
-const BoottmButton = ({ onRegisterClick, stage }) => {
+const BoottmButton = ({ onRegisterClick, stage, reviewText, setReviewText, setShowLetterAnimation }) => {
+  const isActive = reviewText.length >= 20;
+
+  // 하단 버튼 영역만 show/hidden 제어 (등록하기 클릭 시 이 부분만 hidden)
+  const [bottomShow, setBottomShow] = useState(true);
+
+  const handleRegisterClick = () => {
+    setBottomShow(false);
+    setShowLetterAnimation(true);
+  };
+
   return (
     <>
       {/* 그라데이션 배경 오버레이 */}
@@ -212,7 +223,7 @@ const BoottmButton = ({ onRegisterClick, stage }) => {
         variants={EnterFromBottom_modal}
         custom={80}
         initial="hidden"
-        animate={stage === "event" ? "show" : "hidden"}
+        animate={stage === "event" && bottomShow ? "show" : "hidden"}
       >
         {/* 페이드 영역 */}
         <div className="h-[150px] bg-gradient-to-b from-transparent via-white/50 to-white" />
@@ -220,18 +231,26 @@ const BoottmButton = ({ onRegisterClick, stage }) => {
         <div className="h-[400px] bg-white" />
       </motion.div>
 
-      {/* 하단 */}
-      <motion.div className="fixed gap-x-[9px] bottom-0 w-full flex max-w-[393px] h-[108px] flex-col z-50 px-[25px] z-0">
+      {/* 하단 — 등록하기 클릭 시 이 블록만 hidden */}
+      <motion.div
+        className="fixed gap-x-[9px] bottom-0 w-full flex max-w-[393px] h-[108px] flex-col z-50 px-[25px] z-0"
+        variants={EnterFromBottom_modal}
+        custom={0}
+        initial="hidden"
+        animate={stage === "event" && bottomShow ? "show" : "hidden"}
+      >
         <div className="flex flex-row gap-x-[9px] w-full">
           <button className="w-full h-[55px] font-bold border border-[#00AFFE] text-[#00AFFE] rounded-[4px] bg-white">
             <span>다음에</span>
           </button>
-          <button 
-            onClick={onRegisterClick}
-            className="w-full h-[55px] font-bold bg-[#DFE2E7] text-[#919FAC] rounded-[4px]"
+          <motion.button
+            onClick={handleRegisterClick}
+            className="w-full h-[55px] font-bold rounded-[4px]"
+            variants={button_animate}
+            animate={isActive ? "active" : "inactive"}
           >
             <span>등록하기</span>
-          </button>
+          </motion.button>
         </div>
         <div className="flex flex-row text-[14px] text-gray-400 items-center mt-[12px]">
           <img src="/assets/check_1.png" className="w-[16px] h-[16px] mr-[4px]"/>
@@ -252,6 +271,10 @@ function App() {
   const [stage, setStage] = useState(null);
   // showAnimation: 애니메이션 표시 여부
   const [showAnimation, setShowAnimation] = useState(false);
+  // 등록하기 버튼 누를 시 편지 애니메이션 표시 여부
+  const [showLetterAnimation, setShowLetterAnimation] = useState(false);
+  // reviewText: 리뷰 텍스트 상태 (Review와 BoottmButton에서 공유)
+  const [reviewText, setReviewText] = useState("");
 
   // lottieRef: Lottie 애니메이션 참조
   const lottieRef = useRef(null);
@@ -264,20 +287,12 @@ function App() {
     return () => clearTimeout(timer); // cleanup
   }, []);
 
-  const handleRegisterClick = () => {
-    setShowAnimation(true);
-  };
-
-  const handleAnimationComplete = () => {
-    setShowAnimation(false);
-  };
-  
   return (
     // 전체 배경 및 모바일 컨테이너 설정
     <div className="bg-gray-100 min-h-screen flex justify-center font-sans">
       <div 
         ref={containerRef}
-        className="relative overflow-x-hidden w-full max-w-[393px] bg-white min-h-screen relative pb-[70px] mx-auto shadow-lg"
+        className="relative overflow-x-hidden overflow-y-hidden w-full max-w-[393px] bg-white min-h-screen relative pb-[70px] mx-auto shadow-lg"
       >
 
         {/* 딤드 */}
@@ -314,15 +329,16 @@ function App() {
         </motion.div>
 
 
-        {stage === "event" && <EventPage />}
+        {stage === "event" && <EventPage reviewText={reviewText} setReviewText={setReviewText} showLetterAnimation={showLetterAnimation} setShowLetterAnimation={setShowLetterAnimation} setShowAnimation={setShowAnimation} />}
         <BottomNav stage={stage}/>
-        {stage === "event" && <BoottmButton onRegisterClick={handleRegisterClick} stage={stage}/>}
-        
+        {stage === "event" && <BoottmButton stage={stage} reviewText={reviewText} setReviewText={setReviewText} setShowLetterAnimation={setShowLetterAnimation} />}
+
         {/* Lottie 애니메이션 오버레이 */}
         {showAnimation && (
-          <div className="absolute inset-0 w-[393px] h-full z-50 overflow-hidden">
-            <div 
-              className="w-full h-full"
+          <motion.div className="absolute inset-0 h-full z-50 overflow-hidden">
+              <ThanksPage />
+            <motion.div 
+              className="w-full h-full absolute inset-0"
               style={{
                 transform: width && height ? `scale(${height / width})` : 'scale(1)'
               }}
@@ -330,9 +346,9 @@ function App() {
               <Lottie
                 lottieRef={lottieRef}
                 animationData={animationData}
+                // onComplete={() => setShowAnimation(false)}
                 loop={false}
                 autoplay
-                onComplete={handleAnimationComplete}
                 style={{
                   position: 'absolute',
                   top: '50%',
@@ -343,8 +359,8 @@ function App() {
                   objectFit: 'cover',
                 }}
               />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
       </div>
     </div>

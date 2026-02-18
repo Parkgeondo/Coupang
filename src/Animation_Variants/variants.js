@@ -16,7 +16,7 @@ export const EnterFromTop = {
 
   export const EnterFromBottom_modal = {
     show: (custom) => ({ transition: motion.spring.ui, y: `-${custom}vh` }),
-    hidden: (custom) => ({ transition: motion.spring.ui, y: "0vh" })
+    hidden: (custom) => ({ transition: motion.spring.ui, y: `${(100 - custom)/3}vh` })
   };    
 
   export const dimmedBackground = {
@@ -108,36 +108,150 @@ export const EnterFromTop = {
     exit: (d) => ({ y: d, opacity: 0, transition: { duration: 0.14, ease: "easeIn" } }),
   };
 
+  export const skeletonAndtextarea_animate = {
+    hidden: (custom) => ({
+    }),
+    show: (custom) => ({
+      transition: {
+        delay: custom,
+      }
+    }),
+  }
+
   export const skeleton_animate = {
-    show: {
-      opacity: 1,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut"
-      }
-    },
-    hide: {
-      opacity: 0,
-      transition: {
-        duration: 0.3,
-        ease: "easeIn"
-      }
-    }
+    phase1: { opacity: 1, y: 0 },                 
+    phase2: { opacity: 0, y: -10 },               
+    phase3: { opacity: 0, y: -10 },  
+
   }
 
   export const textarea_animate = {
-    hidden: {
-      opacity: 0,
+    phase1: { opacity: 0, y: 10 },          
+    phase2: { opacity: 1, y: 0 },      
+    phase3: { opacity: 1, y: 0 },
+  }
+
+  export const button_animate = {
+    active: {
+      backgroundColor: "#00AFFE",
+      color: "#ffffff",
+      transition: motion.spring.ui
     },
-    show: {
-      opacity: 1,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut"
-      }
+    inactive: {
+      backgroundColor: "#DFE2E7",
+      color: "#919FAC",
+      transition: motion.spring.ui
     }
   }
 
+  export const review_animation = {
+    phase1: {
+      scale: 1,
+      y: 0,
+    },
+    phase2: {
+      scale: 0.8,
+      y: -200,
+      height: "100%",
+      transition: { 
+        y: {
+          type: "tween",
+          duration: 0.4,
+          ease: "easeInOut",
+        }
+      }
+    },
+    phase3: {
+      y: 450,
+      transition: { ...motion.spring.ui },
+      height: "0%",
+      transition: {
+        ...motion.spring.ui,
+      }
+    },
+  }
+
+  export const letter_animation = {
+    phase1: {
+      opacity: 0,
+      y: 400,
+    },
+    phase2: {
+      opacity: [0,1],
+      y: 0,
+      scaleX:  1,
+      scaleY:  1,
+      transition: { type: "tween", duration: 0.4, ease: "easeOut" }
+    },
+    phase3: {
+      y: 0,
+      scaleX: [1.1, 0.9, 1],
+      scaleY: [0.9, 1.1, 1],
+      opacity: [1,1,0,0],
+      
+      transition: {
+        times: [0, 0.2, 0.4],
+        type: "tween", duration: 0.8, ease: "ease" }
+    }
+  }
+
+  export const sealed = {
+    phase1: {
+      y: 400,
+      opacity: 0,
+    },
+    phase2: {
+      y: 0,
+      opacity: 0,
+      scaleX:  1,
+      scaleY:  1,
+      transition: { type: "tween", duration: 0.4, ease: "easeOut" }
+    },
+    phase3: {
+      y: 0,
+      x: [0, 0, 0, 400],
+      rotate: [0, 0, 0, 30],
+      scaleX: [1.1, 0.9, 1],
+      scaleY: [0.9, 1.1, 1],
+      opacity: [0,0,1,1],
+      transition: {
+        times: [0, 0.2, 0.4],
+        type: "tween", duration: 0.8, ease: "ease" }
+    },
+    phase4: {
+    }
+  }
+
+  export const shilling_animation = {
+    phase1: {},
+    phase2: {},
+    phase3: {
+      scale: [0,1],
+      transition: { type: "tween", duration: 0.4, ease: [0.34, 1.56, 0.64, 1] },
+    }
+  }
+
+
+  // ------------------------------------------------------------
+  // ThanksPage Animation Variants
+  // ------------------------------------------------------------
+
+
+  export const thanks_animation = {
+    initial: {
+      opacity: 0,
+      scale: 0.7
+    },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delay: 3.5,
+        duration: 0.4,
+        ease: [0.34, 1.56, 0.64, 1]
+      }
+    }
+  }
 
   // ------------------------------------------------------------
   // ------------------------------------------------------------
