@@ -40,8 +40,5 @@
       "last 1 safari version"
     ]
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Parkgeondo/Coupang.git"
-  },
+  "homepage": "https://parkgeondo.github.io/Coupang"
 }
