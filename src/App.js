@@ -15,13 +15,17 @@ const CATEGORIES = [
   { id: 3, name: '치킨', img: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=100&h=100&fit=crop' },
   { id: 4, name: '커피/차', img: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=100&h=100&fit=crop' },
   { id: 5, name: '버거', img: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=100&h=100&fit=crop' },
-  { id: 6, name: '버거', img: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=100&h=100&fit=crop' }
-  // { id: 6, name: '장보기·쇼핑', icon: 'fa-basket-shopping', color: '#9b59b6', type: 'icon' },
-  // { id: 7, name: 'GS25', text: 'GS25', color: '#007cba', textColor: 'white', type: 'text' },
-  // { id: 8, name: 'CU', text: 'CU', color: '#652f8d', textColor: '#8dc63f', type: 'text' },
-  // { id: 9, name: '홈플러스', text: 'Home\nplus', color: '#e60012', textColor: 'white', type: 'text', fontSize: '10px' },
-  // { id: 10, name: 'GS더프레시', text: 'GS\nFresh', color: '#00564d', textColor: 'white', type: 'text', fontSize: '10px' },
+  { id: 6, name: '버거', img: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=100&h=100&fit=crop' },
 ];
+
+const CATEGORIES_2 = [
+  { id: 1, name: '장보기·쇼핑'},
+  { id: 2, name: 'GS25'},
+  { id: 3, name: 'CU'},
+  { id: 4, name: '홈플러스'},
+  { id: 5, name: 'GS더프레시'},
+  { id: 6, name: '하나로마트'}
+]
 
 const RESTAURANTS = [
   {
@@ -281,7 +285,7 @@ function App() {
   
   useEffect(() => {
     const timer = setTimeout(() => {
-      setStage("event");
+      // setStage("event");
     }, 1000); // 1초 후 event로 변경
     
     return () => clearTimeout(timer); // cleanup
