@@ -1,15 +1,18 @@
 {
   "files": {
-    "main.css": "/Coupang/static/css/main.f1126e5a.css",
-    "main.js": "/Coupang/static/js/main.61f9f829.js",
+    "main.css": "/Coupang/static/css/main.7c5f43b0.css",
+    "main.js": "/Coupang/static/js/main.3b492029.js",
     "static/js/453.664adc18.chunk.js": "/Coupang/static/js/453.664adc18.chunk.js",
+    "static/media/res_2.png": "/Coupang/static/media/res_2.633364d7caf02abc9228.png",
+    "static/media/ad.png": "/Coupang/static/media/ad.f6f6a154ca5f9830a3f2.png",
+    "static/media/Star.svg": "/Coupang/static/media/Star.a57b815c9e02b6b9a3caf3551a5f8635.svg",
     "index.html": "/Coupang/index.html",
-    "main.f1126e5a.css.map": "/Coupang/static/css/main.f1126e5a.css.map",
-    "main.61f9f829.js.map": "/Coupang/static/js/main.61f9f829.js.map",
+    "main.7c5f43b0.css.map": "/Coupang/static/css/main.7c5f43b0.css.map",
+    "main.3b492029.js.map": "/Coupang/static/js/main.3b492029.js.map",
     "453.664adc18.chunk.js.map": "/Coupang/static/js/453.664adc18.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f1126e5a.css",
-    "static/js/main.61f9f829.js"
+    "static/css/main.7c5f43b0.css",
+    "static/js/main.3b492029.js"
   ]
 }
