@@ -45,7 +45,7 @@ export default function ThreeScene() {
         // GLB 모델 로드
         const loader = new GLTFLoader();
         loader.load(
-            '/assets/3D.glb',
+            `${process.env.PUBLIC_URL}/assets/3D.glb`,
             (gltf) => {
                 const model = gltf.scene;
                 scene.add(model);

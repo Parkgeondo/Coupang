@@ -1,6 +1,5 @@
-// Star.svg는 public/assets/Star.svg에 있으므로 /assets/Star.svg로 참조
-
 import { motion } from 'framer-motion';
+import starSvg from '../assets/Star.svg';
 import { EnterFromTop } from '../Animation_Variants/variants';
 
 const FoodThumbnail = () => {
@@ -31,11 +30,31 @@ const FoodThumbnail = () => {
             </p>
       
             <div class="flex gap-2 mt-[4px]">
-                <img src="/assets/Star.svg" className="h-[23px] w-[23px]" alt="star" />
-                <img src="/assets/Star.svg" className="h-[23px] w-[23px]" alt="star" />
-                <img src="/assets/Star.svg" className="h-[23px] w-[23px]" alt="star" />
-                <img src="/assets/Star.svg" className="h-[23px] w-[23px]" alt="star" />
-                <img src="/assets/Star.svg" className="h-[23px] w-[23px]" alt="star" />
+                <img
+                  src={starSvg}
+                  className="h-[23px] w-[23px]"
+                  alt="star"
+                />
+                <img
+                  src={starSvg}
+                  className="h-[23px] w-[23px]"
+                  alt="star"
+                />
+                <img
+                  src={starSvg}
+                  className="h-[23px] w-[23px]"
+                  alt="star"
+                />
+                <img
+                  src={starSvg}
+                  className="h-[23px] w-[23px]"
+                  alt="star"
+                />
+                <img
+                  src={starSvg}
+                  className="h-[23px] w-[23px]"
+                  alt="star"
+                />
             </div>
           </div>
         </div>

@@ -100,7 +100,11 @@ const Review = ({ swipeData, reviewText, setReviewText }) => {
                 disabled={photoCount >= 5}
                 className="w-full h-[53px] mt-[12px] border border-dashed border-[#00AFFE] rounded-[6px] flex items-center justify-center gap-[8px] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
-                <img src="/assets/camera.png" alt="plus" className="w-[29px] h-[29px]"/>
+                <img
+                    src={`${process.env.PUBLIC_URL}/assets/camera.png`}
+                    alt="plus"
+                    className="w-[29px] h-[29px]"
+                />
                 <p className="text-[#00AFFE] font-bold text-[14px]">
                     사진 추가 ({photoCount}/5)
                 </p>

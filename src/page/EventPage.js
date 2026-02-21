@@ -50,13 +50,19 @@ const EventPage = ({ reviewText, setReviewText, showLetterAnimation, setShowAnim
                 initial="phase1"
                 animate={showLetterAnimation ? controls : "phase1"}
             >
-                <motion.img src="/assets/Letter/shilling.png" alt="shilling" className="select-none absolute top-[55%]" draggable={false} onDragStart={(e) => e.preventDefault()} onContextMenu={(e) => e.preventDefault()}
+                <motion.img
+                    src={`${process.env.PUBLIC_URL}/assets/Letter/shilling.png`}
+                    alt="shilling"
+                    className="select-none absolute top-[55%]"
+                    draggable={false}
+                    onDragStart={(e) => e.preventDefault()}
+                    onContextMenu={(e) => e.preventDefault()}
                     variants={shilling_animation}
                     initial="phase1"
                     animate={showLetterAnimation ? controls : "phase1"}
                 />
                 <img 
-                    src="/assets/Letter/Letter_Closed.png" 
+                    src={`${process.env.PUBLIC_URL}/assets/Letter/Letter_Closed.png`}
                     alt="letter_front" 
                     className="select-none"
                     draggable={false}
@@ -71,7 +77,7 @@ const EventPage = ({ reviewText, setReviewText, showLetterAnimation, setShowAnim
                 animate={showLetterAnimation ? controls : "phase1"}
             >
                 <img 
-                    src="/assets/Letter/Letter_Front.png" 
+                    src={`${process.env.PUBLIC_URL}/assets/Letter/Letter_Front.png`}
                     alt="letter_front" 
                     className="select-none"
                     draggable={false}
@@ -101,7 +107,7 @@ const EventPage = ({ reviewText, setReviewText, showLetterAnimation, setShowAnim
                 animate={showLetterAnimation ? controls : "phase1"}
             >
                 <img 
-                    src="/assets/Letter/Letter_Back.png" 
+                    src={`${process.env.PUBLIC_URL}/assets/Letter/Letter_Back.png`}
                     alt="letter_back" 
                     className="select-none"
                     draggable={false}

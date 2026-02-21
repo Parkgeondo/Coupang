@@ -1,18 +1,6 @@
-import { useEffect, useState } from "react";
+import answerData from "../assets/answer/answer.json";
 
 export const useAnswerData = () => {
-    //answer.json 파일을 담는 변수, 파일을 로드하기 위해서 필수
-    const [answerData, setAnswerData] = useState([]);
-
-    useEffect(() => {
-        fetch("/assets/answer.json")
-            .then(res => res.json())
-            .then(data => {
-                setAnswerData(data);
-            })
-            .catch(err => console.error("Error loading answer.json:", err));
-    }, []);
-
     return answerData;
 };
 
