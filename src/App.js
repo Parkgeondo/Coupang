@@ -22,7 +22,9 @@ import adImg from './assets/ad/ad.png';
 import res_1 from './assets/Restaurant/res_2.png';
 
 import freeDeliveryIcon from './assets/freeDelivery/freeDeliveryIcon.png';
+import freeDelivery from './assets/freeDelivery/freeDelivery.png';
 import right from './assets/freeDelivery/right.png';
+import locationIcon from './assets/location/location.png';
 
 import { useResizeObserver } from './Utile/resizeObserver';
 import { dimmedBackground, dimmedScale, EnterFromBottom_modal, button_animate } from './Animation_Variants/variants';
@@ -125,9 +127,9 @@ const FREE_DELIVERY_ITEMS = [
 const Header = () => (
   <header className="p-4 flex justify-between items-center bg-white sticky top-0">
     <div className="flex items-center text-base font-bold cursor-pointer text-gray-800">
-      <i className="fa-solid fa-location-arrow mr-1.5 text-orange-400"></i>
-      서울 송파구 올림픽로 265
-      <i className="fa-solid fa-chevron-down ml-1.5 text-gray-800 text-xs"></i>
+      <img src={locationIcon} alt="location" className="w-[15px] h-[15px] mr-1.5" />
+      <p className="mt-[2px]">서울 송파구 올림픽로 265</p>
+      <i className="fa-solid fa-chevron-down ml-1.5 text-[#0AACF5] text-xs"></i>
     </div>
     <i className="fa-regular fa-bell text-xl text-gray-800"></i>
   </header>
@@ -221,8 +223,13 @@ const FreeDeliveryCard = ({ data }) => (
         {data.discount}
       </div>
       {/* 하나만 담아도 무료배달 라벨 */}
-      <div className="absolute bottom-0 left-0 w-full pt-6 pb-1 px-3 bg-gradient-to-t from-black/55 to-transparent">
-        <span className="text-[#E25526] font-bold text-[13px] tracking-tight">{data.badgeText}</span>
+      <div className="absolute bottom-0 pb-2 left-0 w-full bg-gradient-to-t from-black/55 to-transparent">
+        <span 
+          className="inline-block text-[#E25526] font-bold text-[13px] tracking-tight bg-cover bg-no-repeat leading-tight px-2 py-[2px] "
+          style={{ backgroundImage: `url(${freeDelivery})` }}
+        >
+          {data.badgeText}
+        </span>
       </div>
     </div>
 
@@ -231,19 +238,22 @@ const FreeDeliveryCard = ({ data }) => (
       <h4 className="text-[16px] text-gray-800 font-medium leading-[1.3] mb-2 whitespace-pre-line h-[42px] line-clamp-2">
         {data.title}
       </h4>
-      <div className="mb-3">
+      <div className="">
         <span className="text-[#E43118] text-[16px] font-bold mr-1.5">{data.price}</span>
         <span className="text-gray-400 text-[13px] line-through">{data.originalPrice}</span>
       </div>
+      <div className="h-px bg-[#F5F6F8] my-2 w-full" />
       <div className="mt-auto">
-        <div className="text-[13px] text-gray-500 truncate mb-1.5 flex items-center gap-1">
-          {data.isPasta && (
-            <span className="w-4 h-4 rounded-full bg-[#11233F] text-[#F9CA24] text-[8px] flex items-center justify-center font-bold leading-none">
-              파스타<br/>입니다
-            </span>
-          )}
+      <div className="text-[13px] text-gray-500 mb-1.5 flex items-center gap-1 min-w-0">
+        {data.isPasta && (
+          <span className="shrink-0 w-4 h-4 rounded-full bg-[#11233F] text-[#F9CA24] text-[8px] flex items-center justify-center font-bold leading-none">
+            파
+          </span>
+        )}
+        <span className="truncate block min-w-0 flex-1">
           {data.store}
-        </div>
+        </span>
+      </div>
         <div className="text-[13px] text-gray-600 font-medium flex items-center">
           <i className="fa-solid fa-star text-[#FFB300] mr-1 text-[11px]"></i>
           {data.rating}({data.reviewCount}) · {data.time}
@@ -266,13 +276,13 @@ const FreeDeliverySection = () => (
           <div className="text-[20px] font-bold text-gray-900 leading-tight">하나만 담아도 무료배달</div>
         </div>
       </div>
-      <div className="text-[15px] text-gray-800 font-medium cursor-pointer flex items-center pb-0.5">
+      <div className="text-[15px] text-gray-800 font-medium cursor-pointer flex items-center">
         전체보기 <img src={right} className="w-[16px] h-[16px] ml-1"/>
       </div>
     </div>
 
     {/* 가로 스크롤 카드 리스트 */}
-    <section className="flex px-5 gap-3 overflow-x-auto scrollbar-hide pb-2">
+    <section className="flex px-5 gap-3 overflow-x-hidden pb-2">
       {FREE_DELIVERY_ITEMS.map(item => (
         <FreeDeliveryCard key={item.id} data={item} />
       ))}
@@ -315,7 +325,7 @@ const BottomNav = ({ stage }) => {
   );
 };
 
-const BoottmButton = ({ onRegisterClick, stage, reviewText, setReviewText, setShowLetterAnimation }) => {
+const BoottmButton = ({ onRegisterClick, stage, reviewText, setReviewText, setShowLetterAnimation, showStarAnimation, setStage, showAgain, setShowAgain }) => {
   const isActive = reviewText.length >= 20;
 
   // 하단 버튼 영역만 show/hidden 제어 (등록하기 클릭 시 이 부분만 hidden)
@@ -331,14 +341,14 @@ const BoottmButton = ({ onRegisterClick, stage, reviewText, setReviewText, setSh
       {/* 그라데이션 배경 오버레이 */}
       <motion.div className="fixed -bottom-full left-0 right-0 w-full max-w-[393px] mx-auto pointer-events-none z-10"
         variants={EnterFromBottom_modal}
-        custom={80}
+        custom={100}
         initial="hidden"
         animate={stage === "event" && bottomShow ? "show" : "hidden"}
       >
         {/* 페이드 영역 */}
-        <div className="h-[150px] bg-gradient-to-b from-transparent via-white/50 to-white" />
+        {/* <div className="h-[150px] bg-gradient-to-b from-transparent via-white/50 to-white" /> */}
         {/* 완전 흰색 영역 (108px) */}
-        <div className="h-[400px] bg-white" />
+        <div className="h-[240px] bg-[linear-gradient(to_top_in_oklch,white_0px,white_130px,oklch(1_0_0_/_0)_100%)]" />
       </motion.div>
 
       {/* 하단 — 등록하기 클릭 시 이 블록만 hidden */}
@@ -350,24 +360,29 @@ const BoottmButton = ({ onRegisterClick, stage, reviewText, setReviewText, setSh
         animate={stage === "event" && bottomShow ? "show" : "hidden"}
       >
         <div className="flex flex-row gap-x-[9px] w-full">
-          <button className="w-full h-[55px] font-bold border border-[#00AFFE] text-[#00AFFE] rounded-[4px] bg-white">
+          <button className="w-full h-[55px] font-bold border border-[#00AFFE] text-[#00AFFE] rounded-[4px] bg-white"
+          onClick={() => setStage(null)}
+          >
             <span>다음에</span>
           </button>
           <motion.button
             onClick={handleRegisterClick}
-            className="w-full h-[60px] font-bold rounded-[4px]"
+            disabled={!(showStarAnimation && isActive)}
+            className="w-full h-[55px] font-bold rounded-[4px] disabled:cursor-not-allowed"
             variants={button_animate}
-            animate={isActive ? "active" : "inactive"}
+            animate={showStarAnimation && isActive ? "active" : "inactive"}
           >
-            <span>등록하기</span>
+            <span>리뷰 보내기</span>
           </motion.button>
         </div>
-        <div className="flex flex-row text-[14px] text-gray-400 items-center mt-[12px]">
+        <div className="flex flex-row text-[14px] text-gray-400 items-center mt-[12px] cursor-pointer"
+        onClick={() => setShowAgain(!showAgain)}
+        >
           <img
-            src={`${process.env.PUBLIC_URL}/assets/check_1.png`}
-            className="w-[16px] h-[16px] mr-[4px]"
+            src={`${process.env.PUBLIC_URL}/assets/${showAgain ? 'check_2.png' : 'check_1.png'}`}
+            className="w-[16px] h-[16px] mr-[6px]"
           />
-          <span>이 화면 다시 보지 않기</span>
+          <span className={`${showAgain ? 'text-[#455869]' : 'text-gray-400'} mt-[2px]`}>이 화면 다시 보지 않기</span>
         </div>
       </motion.div>
     </>
@@ -388,13 +403,17 @@ function App() {
   const [showLetterAnimation, setShowLetterAnimation] = useState(false);
   // reviewText: 리뷰 텍스트 상태 (Review와 BoottmButton에서 공유)
   const [reviewText, setReviewText] = useState("");
+  // 별 애니메이션 재생 여부 (EventPage / FoodThumbnail / Review에서 공유)
+  const [showStarAnimation, setShowStarAnimation] = useState(false);
+  // 이 화면 다시 보지 않기 (BoottmButton / ThanksPage에서 공유)
+  const [showAgain, setShowAgain] = useState(false);
 
   // lottieRef: Lottie 애니메이션 참조
   const lottieRef = useRef(null);
   
   useEffect(() => {
     const timer = setTimeout(() => {
-      // setStage("event");
+      setStage("event");
     }, 1000); // 1초 후 event로 변경
     
     return () => clearTimeout(timer); // cleanup
@@ -409,16 +428,17 @@ function App() {
       >
 
         {/* 딤드 */}
-        <motion.div className="absolute inset-0 bg-black/40 z-10"
+        {stage === "event" && <motion.div className="absolute inset-0 bg-black/40 z-10"
           variants={dimmedBackground}
           initial="hidden"
           animate={stage === "event" ? "show" : "hidden"}
         >
-        </motion.div>
+        </motion.div>}
 
 
-        {/* 배경 */}
-        <motion.div className="absolute inset-0"
+        {/* 배경 - bottom 70px 띄워서 하단 네비 공간 확보, 이 영역이 스크롤됨 */}
+        <motion.div
+          className="absolute top-0 left-0 right-0 bottom-[52px] overflow-y-auto overflow-x-hidden scrollbar-hide"
           variants={dimmedScale}
           initial="hidden"
           animate={stage === "event" ? "show" : "hidden"}
@@ -426,7 +446,7 @@ function App() {
           <Header />
           <SearchBar />
           
-          <ul className="divide-y divide-gray-200">
+          <ul className="divide-y divide-[#E1E2E4]">
             {/* 카테고리 그리드 */}
             <div className="inline-flex overflow-x-auto gap-x-2 px-4 py-2.5 text-center">
               {CATEGORIES.map(cat => <CategoryItem key={cat.id} item={cat} />)}
@@ -447,18 +467,26 @@ function App() {
           </section>
 
           <FreeDeliverySection />
-          
         </motion.div>
 
-
-        {stage === "event" && <EventPage reviewText={reviewText} setReviewText={setReviewText} showLetterAnimation={showLetterAnimation} setShowLetterAnimation={setShowLetterAnimation} setShowAnimation={setShowAnimation} />}
+        {stage === "event" && (
+          <EventPage
+            reviewText={reviewText}
+            setReviewText={setReviewText}
+            showLetterAnimation={showLetterAnimation}
+            setShowLetterAnimation={setShowLetterAnimation}
+            setShowAnimation={setShowAnimation}
+            showStarAnimation={showStarAnimation}
+            setShowStarAnimation={setShowStarAnimation}
+          />
+        )}
         <BottomNav stage={stage}/>
-        {stage === "event" && <BoottmButton stage={stage} reviewText={reviewText} setReviewText={setReviewText} setShowLetterAnimation={setShowLetterAnimation} />}
+        {stage === "event" && <BoottmButton stage={stage} reviewText={reviewText} setReviewText={setReviewText} setShowLetterAnimation={setShowLetterAnimation} showStarAnimation={showStarAnimation} setStage={setStage} showAgain={showAgain} setShowAgain={setShowAgain} />}
 
         {/* Lottie 애니메이션 오버레이 */}
         {showAnimation && (
           <motion.div className="absolute inset-0 h-full z-50 overflow-hidden">
-              <ThanksPage />
+              <ThanksPage/>
             <motion.div 
               className="w-full h-full absolute inset-0"
               style={{

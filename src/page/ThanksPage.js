@@ -3,10 +3,15 @@ import { motion} from "framer-motion";
 import Lottie from "lottie-react";
 import characterAnimation from "../Lottie/character_animation.json";
 import { EnterFromTop, thanks_animation } from "../Animation_Variants/variants";
+import { useState } from "react";
+import speechBubble from "../assets/Bubble/speechBubble.png";
+import RippleImage from "../Utile/displacement";
 
-const ThanksPage = () => {
+const ThanksPage = ({}) => {
 
     const characterRef = useRef(null);
+
+    const [showAgain, setShowAgain] = useState(false);
 
     // 캐릭터 Lottie를 3.5초 후에 재생
     useEffect(() => {
@@ -20,7 +25,7 @@ const ThanksPage = () => {
 
     return (
         <motion.div
-          className="w-full h-full flex flex-col items-center justify-between overflow-hidden absolute p-[25px] z-[100] bg-cover bg-center bg-no-repeat"
+          className="w-full h-full flex flex-col items-center justify-between overflow-hidden relative p-[25px] z-[100] bg-cover bg-center bg-no-repeat"
         >
             <div className="w-full flex items-center justify-start gap-[22px]">
                 <img
@@ -31,16 +36,12 @@ const ThanksPage = () => {
                 <p className="text-[20px] font-bold text-white">후기 작성</p>
             </div>
             <motion.div
-                className="w-[349px] h-[317px] absolute top-[20%]"
+                className="w-[369px] h-[337px] absolute top-[50%]"
                 variants={thanks_animation}
                 initial="initial"
                 animate="animate"
-            >   <p className="w-full text-center text-[18px] font-bold text-white absolute left-[50%] translate-x-[-50%] top-[-12%]">후기를 써주셔서 감사합니다!</p>
-                <img
-                    src={`${process.env.PUBLIC_URL}/assets/speechBubble.png`}
-                    alt="ThanksPage"
-                    className="absolute inset-0 z-[1]"
-                />
+            >   <p className="w-full text-center text-[18px] font-bold text-white absolute left-[50%] translate-x-[-50%] top-[-12%]">리뷰 등록이 완료되었습니다!</p>
+                <RippleImage />
                 <div className="w-full h-full flex flex-col items-center justify-start mt-[25px] absolute z-[2]">
                     <Lottie
                         lottieRef={characterRef}
@@ -49,31 +50,33 @@ const ThanksPage = () => {
                         autoplay={false}
                         style={{ width: 160, height: 160 }}
                     />
-                    <p className="text-[14px] font-bold text-[#00AFFE] mt-[10px]">사장님의 한마디</p>
+                    <p className="text-[14px] font-bold text-[#00AFFE] mt-[16px]">사장님의 한마디</p>
                     <div className="flex items-center justify-center gap-[6px]">
                         <img
                             src={`${process.env.PUBLIC_URL}/assets/quote_1.png`}
                             alt="ThanksPage"
-                            className="w-[30px] h-[30px] inline-block"
+                            className="w-[24px] h-[24px] inline-block"
                         />
-                        <p className="text-[18px] font-medium w-full leading-[24px] text-[#222B32] text-center mt-[8px]">
+                        <p className="text-[16px] font-medium w-full leading-[20px] text-[#222B32] text-center mt-[8px]">
                             의견 감사합니다, 더욱 맛있는 <br/>송파구 햄버거점이 되겠습니다!
                         </p>
                         <img
                             src={`${process.env.PUBLIC_URL}/assets/quote_2.png`}
                             alt="ThanksPage"
-                            className="w-[30px] h-[30px] inline-block"
+                            className="w-[24px] h-[24px] inline-block"
                         />
                     </div>
                 </div>
             </motion.div>
-            <div className="flex flex-row text-[14px] text-white items-center">
-                <img
-                    src={`${process.env.PUBLIC_URL}/assets/check_3.png`}
-                    className="w-[16px] h-[16px] mr-[4px]"
-                />
-                <span>이 화면 다시 보지 않기</span>
-            </div>
+        <div className="flex flex-row text-[14px] text-gray-400 items-center mt-[12px] cursor-pointer"
+            onClick={() => setShowAgain(!showAgain)}
+            >
+          <img
+            src={`${process.env.PUBLIC_URL}/assets/${showAgain ? 'check_4.png' : 'check_3.png'}`}
+            className="w-[16px] h-[16px] mr-[6px]"
+          />
+          <span className={`${showAgain ? 'text-[#F5F5F5]' : 'text-[#F5F5F5CC]'} mt-[2px]`}>애니메이션 다시 보지 않기</span>
+        </div>
         </motion.div>
     )
 }

@@ -5,12 +5,12 @@ import { textContainer, textLetter } from "../Animation_Variants/variants";
 
 
 //텍스트 렌더
-const TextRender = ({ text }) => {
+const TextRender = ({ text, dragLeftOrRight }) => {
     const letters = useMemo(() => (text ?? "").split(""), [text]);
   
     return (
       <motion.div
-        className="absolute"
+        className="absolute mt-[15px]"
         variants={textContainer}
         initial="hidden"
         animate="show"
@@ -19,7 +19,15 @@ const TextRender = ({ text }) => {
         {letters.map((ch, i) => (
           <motion.span
             key={i}
-            className="text-[#15426C] text-[20px] font-bold inline-block"
+            className={
+              `${
+                dragLeftOrRight === 'left'
+                ? 'text-[#15426C]'
+                : dragLeftOrRight === 'right'
+                ? 'text-[#463943]'
+                : 'text-[#5D7082]'
+              }
+            ${dragLeftOrRight === 'left'|| dragLeftOrRight === 'right' ? 'text-[24px] ' : 'text-[20px] '} font-bold inline-block `}
             variants={textLetter}
             custom={5}
           >
@@ -42,8 +50,8 @@ const TextUpandDown = ({ text, dragLeftOrRight }) => {
         <div className="width-full flex justify-center items-center relative h-[40px]">
             <AnimatePresence mode="sync">
                 {dragLeftOrRight === 'none' && <TextRender text={text[0]} key={0}/>}
-                {dragLeftOrRight === 'left' && <TextRender text={text[1]} key={1}/>}
-                {dragLeftOrRight === 'right' && <TextRender text={text[2]} key={2}/>}
+                {dragLeftOrRight === 'left' && <TextRender text={text[1]} key={1} dragLeftOrRight={dragLeftOrRight}/>}
+                {/* {dragLeftOrRight === 'right' && <TextRender text={text[2]} key={2} dragLeftOrRight={dragLeftOrRight}/>} */}
             </AnimatePresence>
         </div>
     )

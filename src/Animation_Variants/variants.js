@@ -3,12 +3,12 @@ import { motion } from "./motionTokens";
 
 
 export const EnterFromTop = {
-    show: (custom) => ({ transition: motion.spring.ui, y: `calc(${custom}vh - 100% - 20px)` }),
+    show: (custom) => ({ transition: motion.spring.ui, y: `calc(${custom}vh - 50% - 290px)` }),
     hidden: (custom) => ({ transition: motion.spring.ui, y: `-${(100 - custom)/3}vh` })
   };    
 
   export const EnterFromBottom = {
-    show: (custom) => ({ transition: motion.spring.ui, y: `${custom}vh` }),
+    show: (custom) => ({ transition: motion.spring.ui, y: `calc(${custom}vh - 50%)` }),
     hidden: (custom) => ({ transition: motion.spring.ui, y: "100vh" }),
     exit: (custom) => ({ transition: { ...motion.spring.ui, delay: 0.6 }, opacity: 0
     })
@@ -90,7 +90,7 @@ export const EnterFromTop = {
     show: {
       transition: {
         type: motion.spring.ui,
-        delayChildren: 0.07,
+        delayChildren: 0.18,
         staggerChildren: 0.02,
       },
     },
@@ -116,6 +116,39 @@ export const EnterFromTop = {
         delay: custom,
       }
     }),
+  }
+
+  // 사용자님의 후기 말투를 기반으로
+  export const reviewTitle_text_animate_1 = {
+    phase1: {
+      opacity: [0,1],
+      y: [10,0],
+      },
+    phase2: {
+    },
+  }
+  // AI 후기를 대신 작성중이예요
+  export const reviewTitle_text_animate_2 = {
+    phase1: {
+      opacity: [0,1],
+      y: [10,0],
+      transition: { delay: 0.02 },
+    },
+    phase2: {
+      opacity: [1,0],
+      y: [0,10],
+    },
+  }
+  // AI 후기를 작성했어요!
+  export const reviewTitle_text_animate_3 = {
+    phase1: {
+      opacity: [0],
+    },
+    phase2: {
+      opacity: [0,1],
+      y: [10,0],
+      transition: { delay: 0.02 },
+    },
   }
 
   export const skeleton_animate = {
@@ -152,7 +185,6 @@ export const EnterFromTop = {
     phase2: {
       scale: 0.8,
       y: -200,
-      height: "100%",
       transition: { 
         y: {
           type: "tween",
@@ -164,12 +196,9 @@ export const EnterFromTop = {
     phase3: {
       y: 450,
       transition: { ...motion.spring.ui },
-      height: "0%",
-      transition: {
-        ...motion.spring.ui,
-      }
     },
   }
+
 
   export const letter_animation = {
     phase1: {
@@ -185,16 +214,17 @@ export const EnterFromTop = {
     },
     phase3: {
       y: 0,
-      scaleX: [1.1, 0.9, 1],
-      scaleY: [0.9, 1.1, 1],
-      opacity: [1,1,0,0],
-      
+      scaleX: [1,1.1, 0.9, 1],
+      scaleY: [1,0.9, 1.1, 1],
+      opacity: [1,1,1,0,0],
       transition: {
-        times: [0, 0.2, 0.4],
+        delay: 0.3,
+        times: [0, 0.2, 0.4, 0.6],
         type: "tween", duration: 0.8, ease: "ease" }
     }
   }
 
+  // 닫히는 편지 봉투
   export const sealed = {
     phase1: {
       y: 400,
@@ -209,28 +239,46 @@ export const EnterFromTop = {
     },
     phase3: {
       y: 0,
-      x: [0, 0, 0, 400],
-      rotate: [0, 0, 0, 30],
-      scaleX: [1.1, 0.9, 1],
-      scaleY: [0.9, 1.1, 1],
-      opacity: [0,0,1,1],
+      x: [0, 0, 0, 0, 450],
+      rotate: [0, 0, 0, 0, 30],
+      scaleX: [1,1.1, 0.9, 1],
+      scaleY: [1,0.9, 1.1, 1],
+      opacity: [0,0,0,1,1],
       transition: {
-        times: [0, 0.2, 0.4],
+        delay: 0.3,
+        times: [0, 0.2, 0.4, 0.6],
         type: "tween", duration: 0.8, ease: "ease" }
     },
     phase4: {
     }
   }
 
+  // 왁스(씰링) 애니메이션
   export const shilling_animation = {
     phase1: {},
     phase2: {},
     phase3: {
-      scale: [0,1],
-      transition: { type: "tween", duration: 0.4, ease: [0.34, 1.56, 0.64, 1] },
-    }
+      scale: [0,0,0,0,1],
+      transition: {
+        delay: 0.4,
+        type: "tween",
+        duration: 0.4,
+        ease: [0.34, 1.56, 0.64, 1],
+      },
+    },
   }
 
+  // 카드 스와이프 영역 및 별점 영역 클리핑
+  export const clipping_animation = {
+    phase1: {
+      clipPath: 'inset(0 0 0% 0)'
+    },
+    phase2: {
+      clipPath: 'inset(0 0 calc(50% - 50px)  0)'
+    },
+    phase3: {},
+    phase4: {}
+  }
 
   // ------------------------------------------------------------
   // ThanksPage Animation Variants
@@ -240,17 +288,50 @@ export const EnterFromTop = {
   export const thanks_animation = {
     initial: {
       opacity: 0,
-      scale: 0.7
+      scale: 0.7,
+      y: "calc(-50% - 80px)",
     },
     animate: {
       opacity: 1,
       scale: 1,
+      y: "calc(-50% - 80px)",
       transition: {
         delay: 3.5,
         duration: 0.4,
-        ease: [0.34, 1.56, 0.64, 1]
-      }
-    }
+        ease: [0.34, 1.56, 0.64, 1],
+      },
+    },
+  }
+
+  // ------------------------------------------------------------
+  // ------------------------------------------------------------
+
+
+  
+  // ------------------------------------------------------------
+  // FoodThumbnail Animation Variants
+  // ------------------------------------------------------------
+
+  export const FoodThumbnail_animation = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.04,   // 각 자식 간격
+      },
+    },
+  }
+  export const FoodThumbnail_item = {
+    hidden: {
+      scale: 1,
+    },
+    show: ([starCount, i]) => ({
+      scale: [1, 1.1, 1],
+      color: starCount > i - 1 ? "#FEC400" : "#DFE2E7",
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+      },
+    }),
   }
 
   // ------------------------------------------------------------

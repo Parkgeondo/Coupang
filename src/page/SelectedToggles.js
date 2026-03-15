@@ -97,7 +97,7 @@ const ToggleItem = ({ item, swipeDataItem, swipeData, moveAll, setSelected_toggl
     )
 }
 
-const SelectedToggles = ({ swipeData, stage }) => {
+const SelectedToggles = ({ Ypoint, swipeData, stage }) => {
     // 모든 토글이 활성화 되었는지 확인
     const [moveAll, setMoveAll] = useState(false);
     const [Selected_toggles, setSelected_toggles] = useState([false, false, false, false]);
@@ -116,7 +116,7 @@ const SelectedToggles = ({ swipeData, stage }) => {
     return (
         <motion.div className="w-[343px] h-[476px] top-[0px] absolute"
             variants={EnterFromBottom}
-            custom={30}
+            custom={Ypoint}
             initial="hidden"
             animate="show"
             style={{ pointerEvents: 'none' }}

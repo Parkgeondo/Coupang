@@ -5,10 +5,21 @@ import { useState } from 'react';
 import { motion, AnimatePresence, useAnimationControls } from 'framer-motion';
 import { useEffect } from 'react';
 import SelectedToggles from '../page/SelectedToggles';
-import { letter_animation, review_animation, sealed, shilling_animation } from '../Animation_Variants/variants';
+import { letter_animation, review_animation, sealed, shilling_animation, clipping_animation } from '../Animation_Variants/variants';
 
-const EventPage = ({ reviewText, setReviewText, showLetterAnimation, setShowAnimation }) => {
+const EventPage = ({
+    reviewText,
+    setReviewText,
+    showLetterAnimation,
+    setShowAnimation,
+    showStarAnimation,
+    setShowStarAnimation,
+}) => {
     const [stage, setStage] = useState("swipe");
+
+    // 카드 및 평가 별 점수 카드 스와이프 위치 조정
+    const Ypoint = 48;
+
     // 각 카드의 스와이프 방향 저장 ('left' | 'right')
     const [swipeData, setSwipeData] = useState([
         {
@@ -45,7 +56,7 @@ const EventPage = ({ reviewText, setReviewText, showLetterAnimation, setShowAnim
     return (
         <>
             {/* 편지 포장 부분 */}
-            <motion.div className="absolute z-[100] w-full h-full flex items-center justify-center pointer-events-none"
+            <motion.div className="absolute z-[100] w-full h-full flex items-center justify-center pointer-events-none "
                 variants={sealed}
                 initial="phase1"
                 animate={showLetterAnimation ? controls : "phase1"}
@@ -53,7 +64,7 @@ const EventPage = ({ reviewText, setReviewText, showLetterAnimation, setShowAnim
                 <motion.img
                     src={`${process.env.PUBLIC_URL}/assets/Letter/shilling.png`}
                     alt="shilling"
-                    className="select-none absolute top-[55%]"
+                    className="select-none absolute top-[calc(50%+50px)]"
                     draggable={false}
                     onDragStart={(e) => e.preventDefault()}
                     onContextMenu={(e) => e.preventDefault()}
@@ -86,18 +97,30 @@ const EventPage = ({ reviewText, setReviewText, showLetterAnimation, setShowAnim
                 />
             </motion.div>
 
-            <motion.div 
-                variants={review_animation}
-                initial="phase1"
-                animate={showLetterAnimation ? controls : "phase1"}
-                className="z-50 absolute inset-0 flex flex-col items-center gap-4 overflow-hidden"
-            >
-                <FoodThumbnail />
-                {(stage === "review") && <Review swipeData={swipeData} stage={stage} reviewText={reviewText} setReviewText={setReviewText} />}
-                <AnimatePresence>
-                    {stage === "swipe" && <CardSwape onComplete={() => setStage("review")} swipeData={swipeData} setSwipeData={setSwipeData}/>}
-                </AnimatePresence>
-                {(stage === "review" || stage === "swipe") && <SelectedToggles swipeData={swipeData} stage={stage} />}
+            {/* 카드 리뷰 및 별점 부분 */}
+            <motion.div className="w-full
+                            h-[calc(100%+120px)]
+                            absolute z-[20]
+                            overflow-hidden
+                            flex flex-col items-center justify-center
+                        "
+                        variants={clipping_animation}
+                        initial="phase1"
+                        animate={showLetterAnimation ? controls : "phase1"}
+                        >
+                <motion.div 
+                    variants={review_animation}
+                    initial="phase1"
+                    animate={showLetterAnimation ? controls : "phase1"}
+                    className="z-50 absolute inset-0 flex flex-col items-center gap-4 overflow-hidden"
+                >
+                    <FoodThumbnail Ypoint={Ypoint} showStarAnimation={showStarAnimation} swipeData={swipeData}/>
+                        {(stage === "review") && <Review Ypoint={Ypoint} swipeData={swipeData} stage={stage} reviewText={reviewText} setReviewText={setReviewText} setShowStarAnimation={setShowStarAnimation} />}
+                    <AnimatePresence>
+                        {stage === "swipe" && <CardSwape Ypoint={Ypoint} onComplete={() => setStage("review")} swipeData={swipeData} setSwipeData={setSwipeData}/>}
+                    </AnimatePresence>
+                        {(stage === "review" || stage === "swipe") && <SelectedToggles Ypoint={Ypoint} swipeData={swipeData} stage={stage} />}
+                </motion.div>
             </motion.div>
 
             {/* 편지 뒷장 부분 */}

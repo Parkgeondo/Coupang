@@ -5,6 +5,7 @@ import Lottie from 'lottie-react';
 import lottieAnimation1 from '../Lottie/1.json';
 import lottieAnimation2 from '../Lottie/2.json';
 import lottieAnimation3 from '../Lottie/3.json';
+import lottieAnimation4 from '../Lottie/4.json';
 import swipeAnimation from '../Lottie/swipe.json';
 import ThreeScene from './ThreeScene';
 import { cardSwipe } from '../Animation_Variants/variants';
@@ -16,26 +17,27 @@ import TextUpandDown from '../Utile/textUpandDown';
 // --- 평가데이터 ---
 const CATEGORIES = [
     {
-        id: 1,
-        name: ['배달은 빨랐나요?', '배달이 빨랐어요!', '배달이 느렸어요...'],
-        useThree: true
+      id: 1,
+      name: ['배달은 어땠나요?', '좋았어요!', '별로예요...'],
+      useThree: true,
+      img: lottieAnimation4
     },
     {
-        id: 2,
-        name: ['포장은 괜찮았나요?', '포장이 깔끔했어요!', '포장이 더러웠어요...'],
-        img: lottieAnimation3
+      id: 2,
+      name: ['포장은 어땠나요?', '좋았어요!', '별로예요...'],
+      img: lottieAnimation3
     },
     {
-        id: 3,
-        name: ['음식의 양은 충분했나요?', '음식의 양이 충분했어요!', '음식의 양이 부족했어요...'],
-        img: lottieAnimation2
+      id: 3,
+      name: ['음식의 양은 어땠나요?', '좋았어요!', '별로예요...'],
+      img: lottieAnimation2
     },
     {
-        id: 4,
-        name: ['음식 맛은 어땠나요?', '음식 맛이 맛있었어요!', '음식 맛이 맛없었어요...'],
-        img: lottieAnimation1
+      id: 4,
+      name: ['음식 맛은 어땠나요?', '좋았어요!', '별로예요...'],
+      img: lottieAnimation1
     }
-]
+  ]
 
 //카드 컴포넌트
 const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onComplete, onSwipe, swipeData }) => {
@@ -113,9 +115,18 @@ const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onCo
                     rounded-[16px] px-4 py-4 absolute
                     shadow-[0px_-4px_0px_#FFFFFF]">
         <TextUpandDown text={text} swipeData={swipeData} dragLeftOrRight={dragLeftOrRight}/>
-        <div className="w-full h-[280px] flex justify-center items-center mt-4">
+        <div className="relative w-full h-[280px] flex justify-center items-center mt-4">
             {useThree ? (
-                <ThreeScene />
+                <div className="">
+                   <ThreeScene />
+                    <Lottie
+                        animationData={img}
+                        loop={true}
+                        autoplay={true}
+                        style={{ width: '290px', height: '290px'}}
+                        className="absolute top-0 left-0 z-[-1]"
+                    />
+                </div>
             ) : img ? (
                 <Lottie
                     animationData={img}
@@ -129,7 +140,7 @@ const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onCo
     )
 }
 
-const CardSwape = ({ onComplete, swipeData, setSwipeData }) => {
+const CardSwape = ({ Ypoint, onComplete, swipeData, setSwipeData }) => {
 
     const Zindex = useMotionValue(0);
     const [step_card, setStepCard] = useState(0);
@@ -153,7 +164,7 @@ const CardSwape = ({ onComplete, swipeData, setSwipeData }) => {
     return (
         <motion.div className="w-[343px] h-[476px] rounded-[16px] bg-gradient-to-b from-[#00AFFE] to-[#0069CC] flex flex-col items-center [perspective:9000px] overflow-hidden absolute"
             variants={EnterFromBottom}
-            custom={30}
+            custom={Ypoint}
             initial="hidden"
             animate="show"
             exit="exit"
