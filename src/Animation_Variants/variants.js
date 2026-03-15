@@ -103,9 +103,21 @@ export const EnterFromTop = {
   };
   
   export const textLetter = {
-    hidden: (d) => ({ y: -d, opacity: 0 }),
+    hidden: ([d, i]) => ({ y: -d, opacity: 0 }),
     show: { y: 0, opacity: 1, transition: { duration: 0.18, ease: "easeOut" } },
-    exit: (d) => ({ y: d, opacity: 0, transition: { duration: 0.14, ease: "easeIn" } }),
+    exit: ([d, i]) => ({ y: d, opacity: 0, transition: { duration: 0.14, ease: "easeIn" } }),
+  };
+
+  export const textLetter_left = {
+    hidden: ([d, i]) => ({ y: 0, opacity: 0, scale: 1 }),
+    show: ([d, i]) =>{ return { y: 0, opacity: 1, scale: [1, 1.2, 1.2, 1], x: [0, (i-2)*3, (i-2)*3.5, 0], transition: { duration: 0.6, ease: "easeOut" } } },
+    exit: ([d, i]) => ({ y: 0, opacity: 0, scale: 1, transition: { duration: 0.14, ease: "easeIn" } }),
+  };
+
+  export const textLetter_right = {
+    hidden: ([d, i]) => ({ y: 0, opacity: 0 }),
+    show: ([d, i]) =>{ return { y: [0, 10], opacity: 1, transition: { duration: 1.2, ease: "easeOut" } } },
+    exit: ([d, i]) => ({ y: 0, opacity: 0, scale: 1, transition: { duration: 0.14, ease: "easeIn" } }),
   };
 
   export const skeletonAndtextarea_animate = {

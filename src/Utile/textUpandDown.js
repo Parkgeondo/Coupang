@@ -1,7 +1,10 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect, useMemo } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { textContainer, textLetter } from "../Animation_Variants/variants";
+import { textContainer, textLetter, textLetter_left, textLetter_right } from "../Animation_Variants/variants";
+import Lottie from 'lottie-react';
+import animationData from '../Lottie/positive.json';
+import animationData2 from '../Lottie/negative.json';
 
 
 //텍스트 렌더
@@ -10,7 +13,7 @@ const TextRender = ({ text, dragLeftOrRight }) => {
   
     return (
       <motion.div
-        className="absolute mt-[15px]"
+        className="absolute mt-[15px] z-[0]"
         variants={textContainer}
         initial="hidden"
         animate="show"
@@ -28,8 +31,8 @@ const TextRender = ({ text, dragLeftOrRight }) => {
                 : 'text-[#5D7082]'
               }
             ${dragLeftOrRight === 'left'|| dragLeftOrRight === 'right' ? 'text-[24px] ' : 'text-[20px] '} font-bold inline-block `}
-            variants={textLetter}
-            custom={5}
+            variants={dragLeftOrRight === 'left' ? textLetter_left : dragLeftOrRight === 'right' ? textLetter_right : textLetter}
+            custom={[5, i]}
           >
             {ch === " " ? "\u00A0" : ch}
           </motion.span>
@@ -51,8 +54,15 @@ const TextUpandDown = ({ text, dragLeftOrRight }) => {
             <AnimatePresence mode="sync">
                 {dragLeftOrRight === 'none' && <TextRender text={text[0]} key={0}/>}
                 {dragLeftOrRight === 'left' && <TextRender text={text[1]} key={1} dragLeftOrRight={dragLeftOrRight}/>}
-                {/* {dragLeftOrRight === 'right' && <TextRender text={text[2]} key={2} dragLeftOrRight={dragLeftOrRight}/>} */}
+                {dragLeftOrRight === 'right' && <TextRender text={text[2]} key={2} dragLeftOrRight={dragLeftOrRight}/>}
             </AnimatePresence>
+          {(dragLeftOrRight === 'left' || dragLeftOrRight === 'right') && (
+                <Lottie
+                    animationData={dragLeftOrRight === 'left' ? animationData : animationData2}
+                    loop={false}
+                    className="absolute top-[-16px] w-[220px] h-[80px] z-[-1]"
+                />
+            )}
         </div>
     )
 }
