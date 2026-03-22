@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useSpring, useTransform, transformTemplate, useMotionValueEvent, animate } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, transformTemplate, useMotionValueEvent, animate } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { EnterFromBottom } from '../Animation_Variants/variants';
 import Lottie from 'lottie-react';
@@ -12,6 +12,7 @@ import { cardSwipe } from '../Animation_Variants/variants';
 import { swipe_circle, afterimage } from '../Animation_Variants/variants';
 import { motion as motionTokens } from '../Animation_Variants/motionTokens';
 import TextUpandDown from '../Utile/textUpandDown';
+import slideArrow from '../assets/slideArrow/slideArrow.svg';
 // import lottieAnimation4 from '../Lottie/4.json';
 
 // --- 평가데이터 ---
@@ -144,6 +145,8 @@ const CardSwape = ({ Ypoint, onComplete, swipeData, setSwipeData }) => {
 
     const Zindex = useMotionValue(0);
     const [step_card, setStepCard] = useState(0);
+    /** 카드 영역 터치 시 스와이프 힌트(화살표) 숨김 */
+    const [showSwipeHints, setShowSwipeHints] = useState(true);
     
     // Zindex에 spring 애니메이션 적용
     const springZindex = useSpring(Zindex, {
@@ -181,39 +184,80 @@ const CardSwape = ({ Ypoint, onComplete, swipeData, setSwipeData }) => {
                         ease: "easeInOut"
                     }}
                 >
-                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((index) => (
-                        <motion.div
-                            key={index}
-                            className="absolute w-[8px] h-[8px] bg-white rounded-full"
-                            initial={{ opacity: 1/(index+1), x: 0 }}
-                            animate={{
-                                x: [0, 50, 0, 50, 0],
-                            }}
-                            transition={{
-                                duration: 4.5,
-                                ease: "easeInOut",
-                                delay: index * 0.02,
-                                times: [0, 0.2, 0.8, 1],
-                                repeat: Infinity,
-                            }}
-                        />
-                    ))}
                 </motion.div>
-                <p>카드를 옆으로 슬라이드 해주세요</p>
+                <p>카드를 밀어서 음식을 평가해주세요</p>
             </div>
             <div className="relative w-[290px] h-[439px]
                             [transform-style:preserve-3d]
                             [transform:translateY(33px)_translateZ(-600px)_rotateX(-4deg)]
                             ">
-                            <motion.div>
-                                
-                            </motion.div>
-                <motion.div 
-                    className="[transform-style:preserve-3d]"
+                <AnimatePresence>
+                    {showSwipeHints && (
+                        <motion.div
+                            key="swipe-hints"
+                            className="absolute left-0 top-0 w-full h-full pointer-events-none"
+                            style={{ z: 2500 }}
+                            initial={{ opacity: 0 }}
+                            animate={{opacity: 1}}
+                            exit={{
+                                opacity: 0,
+                                transition: { duration: 0.28, ease: [0.4, 0, 0.2, 1] },
+                            }}
+                        >
+                            <motion.img
+                                src={slideArrow}
+                                className="w-[14px] h-[64px] absolute right-[34px] top-[37px]"
+                                animate={{ x: [0, 5, 0] }}
+                                transition={{
+                                    duration: 1.8,
+                                    repeat: Infinity,
+                                    ease: 'easeInOut',
+                                }}
+                            />
+                            <motion.img
+                                src={slideArrow}
+                                className="w-[14px] h-[64px] absolute right-[45px] top-[37px] opacity-[60%]"
+                                animate={{ x: [0, 10, 0] }}
+                                transition={{
+                                    duration: 1.8,
+                                    repeat: Infinity,
+                                    ease: 'easeInOut',
+                                }}
+                            />
+                            <motion.img
+                                src={slideArrow}
+                                className="w-[14px] h-[64px] absolute left-[34px] top-[37px]"
+                                initial={{ scaleX: -1 }}
+                                animate={{ x: [0, -5, 0] }}
+                                transition={{
+                                    duration: 1.8,
+                                    repeat: Infinity,
+                                    ease: 'easeInOut',
+                                }}
+                            />
+                            <motion.img
+                                src={slideArrow}
+                                className="w-[14px] h-[64px] absolute left-[45px] top-[37px] opacity-[60%]"
+                                initial={{ scaleX: -1 }}
+                                animate={{ x: [0, -10, 0] }}
+                                transition={{
+                                    duration: 1.8,
+                                    repeat: Infinity,
+                                    ease: 'easeInOut',
+                                }}
+                            />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+                <motion.div
+                    className="[transform-style:preserve-3d] z-20 w-full h-full"
                     style={{
                         z: springZindex,
-                        transformStyle: 'preserve-3d'
-                    }}>
+                        transformStyle: 'preserve-3d',
+                    }}
+                    onPointerDown={() => setShowSwipeHints(false)}
+                    onPointerUp={() => setShowSwipeHints(true)}
+                >
                     {CATEGORIES.map((category, index) => (
                         <Card key={category.id} text={category.name} img={category.img} useThree={category.useThree} index={index} Zindex={Zindex} step_card={step_card} setStepCard={setStepCard} onComplete={onComplete} onSwipe={handleSwipe}/>
                     ))}

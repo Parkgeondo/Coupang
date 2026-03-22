@@ -79,9 +79,9 @@ const ToggleItem = ({ item, swipeDataItem, swipeData, moveAll, setSelected_toggl
         <motion.div 
             className="bg-[#017BD9] rounded-full flex items-center justify-center overflow-hidden"
                 variants={ToggleItem_animate}
-                custom={{ width, height, positionX: item.positionX, positionY: item.positionY }}
+                custom={{ width, height, positionX: item.positionX, positionY: item.positionY, direction: swipeDataItem?.direction }}
                 initial="toggle_hidden"
-                animate={controls}  
+                animate={controls}
                 onAnimationComplete={(done) => {
                     if(done == 'toggle_show'){
                         setSelected_toggles(prev =>
@@ -90,7 +90,18 @@ const ToggleItem = ({ item, swipeDataItem, swipeData, moveAll, setSelected_toggl
                     }
                 }}
             >
-            <p ref={textRef} className="text-[#00A7F8] text-xs font-medium whitespace-nowrap inline-block">
+            <p
+                ref={textRef}
+                className="text-xs font-medium whitespace-nowrap inline-block"
+                style={{
+                    color:
+                        swipeDataItem?.direction === 'left'
+                            ? '#00A7F8'
+                            : swipeDataItem?.direction === 'right'
+                            ? '#70909F'
+                            : '#5D7082',
+                }}
+            >
                 {currentText}
             </p>
         </motion.div>

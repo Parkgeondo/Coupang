@@ -37,12 +37,11 @@ export const EnterFromTop = {
     toggle_show: (custom) => {
       const width = custom?.width+16 || 7;
       const height = custom?.height+6 || 7;
-      const backgroundColor = '#ffffff';
       return { 
         transition: motion.elasticity.ui, 
         width: width,
         height: height,
-        backgroundColor: backgroundColor
+        backgroundColor: custom?.direction === 'left' ? '#ffffff' : custom?.direction === 'right' ? '#F3F5F8' : '#017BD9'
       };
     },
     toggle_hidden: (c) => ({
@@ -345,10 +344,22 @@ export const EnterFromTop = {
       },
     }),
   }
+  
 
   // ------------------------------------------------------------
   // ------------------------------------------------------------
 
+    
+  // ------------------------------------------------------------
+  // swipe arrow Animation Variants
+  // ------------------------------------------------------------
+
+  export const swipe_arrow = {
+
+  }
+
+  // ------------------------------------------------------------
+  // ------------------------------------------------------------
 
   
 export const swipe_circle = {
