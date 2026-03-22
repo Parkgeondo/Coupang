@@ -163,6 +163,8 @@ const CardSwape = ({ Ypoint, onComplete, swipeData, setSwipeData }) => {
             return newSwipeData;
         });
     };
+
+    
     
     return (
         <motion.div className="w-[343px] h-[476px] rounded-[16px] bg-gradient-to-b from-[#00AFFE] to-[#0069CC] flex flex-col items-center [perspective:9000px] overflow-hidden absolute"
