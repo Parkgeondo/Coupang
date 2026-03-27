@@ -6,28 +6,28 @@ import { useResizeObserver } from "../Utile/resizeObserver";
 const TOGGLES = [
     {
         id: 1,
-        name: [' ','맛있었어요','맛없었었어요'],
+        name: [' ', '맛없었었어요', '맛있었어요'],
         selected: false,
         positionX: 20,
         positionY: 60
     },
     {
         id: 2,
-        name: [' ','충분했어요','부족했어요'],
+        name: [' ', '부족했어요', '충분했어요'],
         selected: false,
         positionX: 50,
         positionY: 90
     },
     {
         id: 3,
-        name: [' ','깔끔했어요','더러웠어요'],
+        name: [' ', '더러웠어요', '깔끔했어요'],
         selected: false,
         positionX: -65,
         positionY: 120
     },
     {
         id: 4,
-        name: [' ','빨랐어요','늦었어요'],
+        name: [' ', '늦었어요', '빨랐어요'],
         selected: false,
         positionX: -20,
         positionY: 150
@@ -95,9 +95,9 @@ const ToggleItem = ({ item, swipeDataItem, swipeData, moveAll, setSelected_toggl
                 className="text-xs font-medium whitespace-nowrap inline-block"
                 style={{
                     color:
-                        swipeDataItem?.direction === 'left'
+                        swipeDataItem?.direction === 'right'
                             ? '#00A7F8'
-                            : swipeDataItem?.direction === 'right'
+                            : swipeDataItem?.direction === 'left'
                             ? '#70909F'
                             : '#5D7082',
                 }}

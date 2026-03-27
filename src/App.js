@@ -3,6 +3,7 @@ import EventPage from './page/EventPage';
 import { motion } from 'framer-motion';
 import Lottie from 'lottie-react';
 import animationData from './Lottie/animation.json';
+import { AnimatePresence } from 'framer-motion';
 
 // src/assets/categories 이미지 import (파일명: categories_1.png 형식)
 import cat1 from './assets/categories/categories_1.png';
@@ -18,7 +19,6 @@ import cat1_4 from './assets/categories/categories_1_4.png';
 import cat1_5 from './assets/categories/categories_1_5.png';
 import cat1_6 from './assets/categories/categories_1_6.png';
 import adImg from './assets/ad/ad.png';
-
 import res_1 from './assets/Restaurant/res_2.png';
 
 import freeDeliveryIcon from './assets/freeDelivery/freeDeliveryIcon.png';
@@ -27,7 +27,7 @@ import right from './assets/freeDelivery/right.png';
 import locationIcon from './assets/location/location.png';
 
 import { useResizeObserver } from './Utile/resizeObserver';
-import { dimmedBackground, dimmedScale, EnterFromBottom_modal, button_animate } from './Animation_Variants/variants';
+import { dimmedBackground, dimmedScale, EnterFromBottom_modal, button_animate, bottomButton_animation_1, bottomButton_animation_2 } from './Animation_Variants/variants';
 import ThanksPage from './page/ThanksPage';
 
 // --- 데이터 (Mock Data) ---------------------------------------------------------------------------------------------------------------------------
@@ -325,11 +325,15 @@ const BottomNav = ({ stage }) => {
   );
 };
 
-const BoottmButton = ({ onRegisterClick, stage, reviewText, setReviewText, setShowLetterAnimation, showStarAnimation, setStage, showAgain, setShowAgain }) => {
+const BoottmButton = ({ onRegisterClick, EventPage_State, stage, reviewText, setReviewText, setShowLetterAnimation, showStarAnimation, setStage, showAgain, setShowAgain, swipeLeftRef }) => {
   const isActive = reviewText.length >= 20;
 
   // 하단 버튼 영역만 show/hidden 제어 (등록하기 클릭 시 이 부분만 hidden)
   const [bottomShow, setBottomShow] = useState(true);
+
+  useEffect(() => {
+    console.log(stage);
+  }, [stage]);
 
   const handleRegisterClick = () => {
     setBottomShow(false);
@@ -353,28 +357,78 @@ const BoottmButton = ({ onRegisterClick, stage, reviewText, setReviewText, setSh
 
       {/* 하단 — 등록하기 클릭 시 이 블록만 hidden */}
       <motion.div
-        className="fixed gap-x-[9px] bottom-0 w-full flex max-w-[393px] h-[108px] flex-col z-50 px-[25px] z-0"
+        className="fixed bottom-0 w-full flex max-w-[393px] h-[108px] flex-col z-50 px-[25px] z-0"
         variants={EnterFromBottom_modal}
         custom={0}
         initial="hidden"
         animate={stage === "event" && bottomShow ? "show" : "hidden"}
       >
-        <div className="flex flex-row gap-x-[9px] w-full">
-          <button className="w-full h-[55px] font-bold border border-[#00AFFE] text-[#00AFFE] rounded-[4px] bg-white"
-          onClick={() => setStage(null)}
-          >
-            <span>다음에</span>
-          </button>
-          <motion.button
-            onClick={handleRegisterClick}
-            disabled={!(showStarAnimation && isActive)}
-            className="w-full h-[55px] font-bold rounded-[4px] disabled:cursor-not-allowed"
-            variants={button_animate}
-            animate={showStarAnimation && isActive ? "active" : "inactive"}
-          >
-            <span>리뷰 보내기</span>
-          </motion.button>
-        </div>
+        <div className="w-full h-[55px]">
+        <AnimatePresence>
+          {EventPage_State === "swipe" && (
+            <motion.div className="w-[calc(100%-50px)] flex flex-row gap-x-[9px] max-w-[393px] absolute"
+              variants={bottomButton_animation_1}
+              initial="show"
+              animate="show"
+              exit="hidden"
+            >
+              {/* <button className="w-full h-[55px] font-bold border border-[#00AFFE] text-[#00AFFE] rounded-[4px] bg-white"
+              onClick={() => setStage(null)}
+              >
+                <span>별로였어요</span>
+              </button>
+              <motion.button
+                onClick={handleRegisterClick}
+                disabled={!(showStarAnimation && isActive)}
+                className="w-full h-[55px] font-bold rounded-[4px] disabled:cursor-not-allowed"
+                variants={button_animate}
+                animate={showStarAnimation && isActive ? "active" : "inactive"}
+              >
+                <span>좋았어요</span>
+              </motion.button> */}
+              <motion.button
+                type="button"
+                onClick={() => swipeLeftRef?.current?.('left')}
+                className="w-full h-[55px] font-bold rounded-[4px] disabled:cursor-not-allowed bg-[#65767E] text-white"
+              >
+                <span>별로였어요</span>
+              </motion.button>
+              <motion.button
+                className="w-full h-[55px] font-bold rounded-[4px] disabled:cursor-not-allowed bg-[#01ABFB] text-white"
+                onClick={() => swipeLeftRef?.current?.('right')}
+                initial="hidden"
+                animate="show"
+              >
+                <span>좋았어요</span>
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+          {EventPage_State === "review" && (
+            <motion.div className="w-[calc(100%-50px)] flex flex-row gap-x-[9px] max-w-[393px] absolute"
+              variants={bottomButton_animation_2}
+              initial="hidden"
+              animate="show"
+              exit="hidden"
+            >
+              <motion.button
+                  className="w-full h-[55px] font-bold rounded-[4px] disabled:cursor-not-allowed bg-[#ffffff] text-[#01ABFB] border border-[#01ABFB]"
+                >
+                  <span>다시하기</span>
+                </motion.button>
+                <motion.button
+                  onClick={handleRegisterClick}
+                  disabled={!(showStarAnimation && isActive)}
+                  initial="inactive"
+                  variants={button_animate}
+                  animate={showStarAnimation && isActive ? "active" : "inactive"}
+                  className="w-full h-[55px] font-bold rounded-[4px] disabled:cursor-not-allowed bg-[#01ABFB] text-white"
+                >
+                  <span>등록하기</span>
+                </motion.button>
+            </motion.div>
+          )}
+          </div>
         <div className="flex flex-row text-[14px] text-gray-400 items-center mt-[12px] cursor-pointer"
         onClick={() => setShowAgain(!showAgain)}
         >
@@ -407,9 +461,23 @@ function App() {
   const [showStarAnimation, setShowStarAnimation] = useState(false);
   // 이 화면 다시 보지 않기 (BoottmButton / ThanksPage에서 공유)
   const [showAgain, setShowAgain] = useState(false);
+  /** EventPage 내부 단계: swipe | review (원래 EventPage 로컬 state) */
+  const [EventPage_State, setEventPage_State] = useState("swipe");
 
   // lottieRef: Lottie 애니메이션 참조
   const lottieRef = useRef(null);
+
+  /** 하단 '별로였어요' → CardSwape 현재 카드 왼쪽 스와이프 */
+  const swipeLeftRef = useRef(null);
+
+  /** 이벤트 화면에 다시 진입할 때만 카드 단계로 초기화 (stage가 event가 아님 → event) */
+  const prevAppStageRef = useRef(null);
+  useEffect(() => {
+    if (stage === "event" && prevAppStageRef.current !== "event") {
+      setEventPage_State("swipe");
+    }
+    prevAppStageRef.current = stage;
+  }, [stage]);
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -478,10 +546,13 @@ function App() {
             setShowAnimation={setShowAnimation}
             showStarAnimation={showStarAnimation}
             setShowStarAnimation={setShowStarAnimation}
+            swipeLeftRef={swipeLeftRef}
+            EventPage_State={EventPage_State}
+            setEventPage_State={setEventPage_State}
           />
         )}
         <BottomNav stage={stage}/>
-        {stage === "event" && <BoottmButton stage={stage} reviewText={reviewText} setReviewText={setReviewText} setShowLetterAnimation={setShowLetterAnimation} showStarAnimation={showStarAnimation} setStage={setStage} showAgain={showAgain} setShowAgain={setShowAgain} />}
+        {stage === "event" && <BoottmButton EventPage_State={EventPage_State} stage={stage} reviewText={reviewText} setReviewText={setReviewText} setShowLetterAnimation={setShowLetterAnimation} showStarAnimation={showStarAnimation} setStage={setStage} showAgain={showAgain} setShowAgain={setShowAgain} swipeLeftRef={swipeLeftRef} />}
 
         {/* Lottie 애니메이션 오버레이 */}
         {showAnimation && (

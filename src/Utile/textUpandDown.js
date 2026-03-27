@@ -52,17 +52,8 @@ const TextUpandDown = ({ text, dragLeftOrRight }) => {
     return (
         <div className="width-full flex justify-center items-center relative h-[40px]">
             <AnimatePresence mode="sync">
-                {dragLeftOrRight === 'none' && <TextRender text={text[0]} key={0}/>}
-                {dragLeftOrRight === 'left' && <TextRender text={text[1]} key={1} dragLeftOrRight={dragLeftOrRight}/>}
-                {dragLeftOrRight === 'right' && <TextRender text={text[2]} key={2} dragLeftOrRight={dragLeftOrRight}/>}
+                <TextRender text={text[0]} key={0}/>
             </AnimatePresence>
-          {(dragLeftOrRight === 'left' || dragLeftOrRight === 'right') && (
-                <Lottie
-                    animationData={dragLeftOrRight === 'left' ? animationData : animationData2}
-                    loop={false}
-                    className="absolute top-[-16px] w-[220px] h-[80px] z-[-1]"
-                />
-            )}
         </div>
     )
 }

@@ -14,8 +14,10 @@ const EventPage = ({
     setShowAnimation,
     showStarAnimation,
     setShowStarAnimation,
+    swipeLeftRef,
+    EventPage_State,
+    setEventPage_State,
 }) => {
-    const [stage, setStage] = useState("swipe");
 
     // 카드 및 평가 별 점수 카드 스와이프 위치 조정
     const Ypoint = 48;
@@ -115,11 +117,11 @@ const EventPage = ({
                     className="z-50 absolute inset-0 flex flex-col items-center gap-4 overflow-hidden"
                 >
                     <FoodThumbnail Ypoint={Ypoint} showStarAnimation={showStarAnimation} swipeData={swipeData}/>
-                        {(stage === "review") && <Review Ypoint={Ypoint} swipeData={swipeData} stage={stage} reviewText={reviewText} setReviewText={setReviewText} setShowStarAnimation={setShowStarAnimation} />}
+                        {(EventPage_State === "review") && <Review Ypoint={Ypoint} swipeData={swipeData} stage={EventPage_State} reviewText={reviewText} setReviewText={setReviewText} setShowStarAnimation={setShowStarAnimation} />}
                     <AnimatePresence>
-                        {stage === "swipe" && <CardSwape Ypoint={Ypoint} onComplete={() => setStage("review")} swipeData={swipeData} setSwipeData={setSwipeData}/>}
+                        {EventPage_State === "swipe" && <CardSwape Ypoint={Ypoint} onComplete={() => setEventPage_State("review")} swipeData={swipeData} setSwipeData={setSwipeData} swipeLeftRef={swipeLeftRef}/>}
                     </AnimatePresence>
-                        {(stage === "review" || stage === "swipe") && <SelectedToggles Ypoint={Ypoint} swipeData={swipeData} stage={stage} />}
+                        {(EventPage_State === "review" || EventPage_State === "swipe") && <SelectedToggles Ypoint={Ypoint} swipeData={swipeData} stage={EventPage_State} />}
                 </motion.div>
             </motion.div>
 

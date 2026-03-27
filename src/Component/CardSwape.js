@@ -1,5 +1,5 @@
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, transformTemplate, useMotionValueEvent, animate } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { EnterFromBottom } from '../Animation_Variants/variants';
 import Lottie from 'lottie-react';
 import lottieAnimation1 from '../Lottie/1.json';
@@ -19,72 +19,59 @@ import slideArrow from '../assets/slideArrow/slideArrow.svg';
 const CATEGORIES = [
     {
       id: 1,
-      name: ['배달은 어땠나요?', '좋았어요!', '별로예요...'],
-      useThree: true,
-      img: lottieAnimation4
+      name: ['음식 맛은 어땠나요?', '좋았어요!', '별로예요...'],
+      img: lottieAnimation1
     },
     {
       id: 2,
-      name: ['포장은 어땠나요?', '좋았어요!', '별로예요...'],
-      img: lottieAnimation3
-    },
-    {
-      id: 3,
       name: ['음식의 양은 어땠나요?', '좋았어요!', '별로예요...'],
       img: lottieAnimation2
     },
     {
+      id: 3,
+      name: ['포장은 어땠나요?', '좋았어요!', '별로예요...'],
+      img: lottieAnimation3
+    },
+    {
       id: 4,
-      name: ['음식 맛은 어땠나요?', '좋았어요!', '별로예요...'],
-      img: lottieAnimation1
+      name: ['배달은 어땠나요?', '좋았어요!', '별로예요...'],
+      useThree: true,
+      img: lottieAnimation4
     }
   ]
 
 //카드 컴포넌트
-const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onComplete, onSwipe, swipeData }) => {
+const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onComplete, onSwipe, swipeData, swipeLeftRef }) => {
     // 각 카드의 거리
     const DISTANCE = 200;
     // baseZ각 카드를 위치에 배분하는 함수
-    const baseZ = index * DISTANCE;
+    const baseZ = (3 - index) * DISTANCE;
     //카드의 X좌표 위치
     const x = useMotionValue(0);
-    //카드의 왼쪽 오른쪽 판별범위
-    const RANGE = 60;
 
-    const handleDragEnd = (e, info) => {
-        // dragX 카드를 드래그 하고 놓았을 시 카드의 X좌표 위치
-        const dragX = info.offset.x;
-        // dragX 카드를 드래그 하고 놓았을 시 카드의 속도
-        const velocityX = info.velocity.x;
-        // dragX 카드를 튕기듯 스와이프 해도 카드가 움직이도록
-        const swipePower = Math.abs(dragX) * velocityX;
+    /** 버튼 등으로 왼쪽 스와이프와 동일 동작 (현재 맨 앞 카드일 때만 ref에 등록) */
+    const performLeftSwipe = useCallback((direction) => {
+        animate(x, direction === 'left' ? -500 : 500, motionTokens.spring.ui);
+        onSwipe(step_card, direction); // 스와이프 데이터 저장
+        Zindex.set(Zindex.get() + DISTANCE);
+        setStepCard(step_card + 1);
 
-        if (dragX < -RANGE) {
-            console.log("✅ 왼쪽 스와이프");
-            animate(x, -500, motionTokens.spring.ui);
-            onSwipe(step_card, 'left'); // 스와이프 데이터 저장
-            Zindex.set(Zindex.get() + DISTANCE);
-            setStepCard(step_card + 1);
-            if (step_card === CATEGORIES.length - 1) {
-                onComplete();
-            }
-            return;
-        }else if (dragX > RANGE) {
-            console.log("✅ 오른쪽 스와이프");
-            animate(x, 500, motionTokens.spring.ui);
-            onSwipe(step_card, 'right'); // 스와이프 데이터 저장
-            Zindex.set(Zindex.get() + DISTANCE);
-            setStepCard(step_card + 1);
-            if (step_card === CATEGORIES.length - 1) {
-                onComplete();
-            }
-            return;
-        } else {
-            animate(x, 0, motionTokens.spring.ui);
-            console.log("❌ 스와이프 안됨");
-            return;
+        // 마지막 카드일 때 완료 함수 호출
+        if (step_card === CATEGORIES.length - 1) {
+            onComplete();
         }
-    }
+    }, [step_card, x, onSwipe, Zindex, setStepCard, onComplete]);
+
+    useEffect(() => {
+        if (!swipeLeftRef) return;
+        if (index !== step_card) return;
+        swipeLeftRef.current = performLeftSwipe;
+        return () => {
+            if (swipeLeftRef.current === performLeftSwipe) {
+                swipeLeftRef.current = null;
+            }
+        };
+    }, [index, step_card, performLeftSwipe, swipeLeftRef]);
 
     const [dragLeftOrRight, setDragLeftOrRight] = useState('none');
 
@@ -103,9 +90,7 @@ const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onCo
 
     return (
     <motion.div
-        drag="x"
         dragMomentum={false}
-        onDragEnd={handleDragEnd}
         style={{ 
             x: x,
             rotateZ: rotateCard,
@@ -141,12 +126,10 @@ const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onCo
     )
 }
 
-const CardSwape = ({ Ypoint, onComplete, swipeData, setSwipeData }) => {
+const CardSwape = ({ Ypoint, onComplete, swipeData, setSwipeData, swipeLeftRef }) => {
 
     const Zindex = useMotionValue(0);
     const [step_card, setStepCard] = useState(0);
-    /** 카드 영역 터치 시 스와이프 힌트(화살표) 숨김 */
-    const [showSwipeHints, setShowSwipeHints] = useState(true);
     
     // Zindex에 spring 애니메이션 적용
     const springZindex = useSpring(Zindex, {
@@ -163,7 +146,6 @@ const CardSwape = ({ Ypoint, onComplete, swipeData, setSwipeData }) => {
             return newSwipeData;
         });
     };
-
     
     
     return (
@@ -187,81 +169,21 @@ const CardSwape = ({ Ypoint, onComplete, swipeData, setSwipeData }) => {
                     }}
                 >
                 </motion.div>
-                <p>카드를 밀어서 음식을 평가해주세요</p>
+                <p>음식과 배달에 대해 평가해주세요</p>
             </div>
             <div className="relative w-[290px] h-[439px]
                             [transform-style:preserve-3d]
                             [transform:translateY(33px)_translateZ(-600px)_rotateX(-4deg)]
                             ">
-                <AnimatePresence>
-                    {showSwipeHints && (
-                        <motion.div
-                            key="swipe-hints"
-                            className="absolute left-0 top-0 w-full h-full pointer-events-none"
-                            style={{ z: 2500 }}
-                            initial={{ opacity: 0 }}
-                            animate={{opacity: 1}}
-                            exit={{
-                                opacity: 0,
-                                transition: { duration: 0.28, ease: [0.4, 0, 0.2, 1] },
-                            }}
-                        >
-                            <motion.img
-                                src={slideArrow}
-                                className="w-[14px] h-[64px] absolute right-[34px] top-[37px]"
-                                animate={{ x: [0, 5, 0] }}
-                                transition={{
-                                    duration: 1.8,
-                                    repeat: Infinity,
-                                    ease: 'easeInOut',
-                                }}
-                            />
-                            <motion.img
-                                src={slideArrow}
-                                className="w-[14px] h-[64px] absolute right-[45px] top-[37px] opacity-[60%]"
-                                animate={{ x: [0, 10, 0] }}
-                                transition={{
-                                    duration: 1.8,
-                                    repeat: Infinity,
-                                    ease: 'easeInOut',
-                                }}
-                            />
-                            <motion.img
-                                src={slideArrow}
-                                className="w-[14px] h-[64px] absolute left-[34px] top-[37px]"
-                                initial={{ scaleX: -1 }}
-                                animate={{ x: [0, -5, 0] }}
-                                transition={{
-                                    duration: 1.8,
-                                    repeat: Infinity,
-                                    ease: 'easeInOut',
-                                }}
-                            />
-                            <motion.img
-                                src={slideArrow}
-                                className="w-[14px] h-[64px] absolute left-[45px] top-[37px] opacity-[60%]"
-                                initial={{ scaleX: -1 }}
-                                animate={{ x: [0, -10, 0] }}
-                                transition={{
-                                    duration: 1.8,
-                                    repeat: Infinity,
-                                    ease: 'easeInOut',
-                                }}
-                            />
-                        </motion.div>
-                    )}
-                </AnimatePresence>
                 <motion.div
                     className="[transform-style:preserve-3d] z-20 w-full h-full"
                     style={{
                         z: springZindex,
                         transformStyle: 'preserve-3d',
                     }}
-                    onPointerDown={() => setShowSwipeHints(false)}
-                    onPointerUp={() => setShowSwipeHints(true)}
                 >
                     {CATEGORIES.map((category, index) => (
-                        <Card key={category.id} text={category.name} img={category.img} useThree={category.useThree} index={index} Zindex={Zindex} step_card={step_card} setStepCard={setStepCard} onComplete={onComplete} onSwipe={handleSwipe}/>
+                        <Card key={category.id} text={category.name} img={category.img} useThree={category.useThree} index={index} Zindex={Zindex} step_card={step_card} setStepCard={setStepCard} onComplete={onComplete} onSwipe={handleSwipe} swipeLeftRef={swipeLeftRef}/>
                     ))}
                 </motion.div>
             </div>

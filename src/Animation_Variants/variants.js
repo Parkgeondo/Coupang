@@ -351,8 +351,48 @@ export const EnterFromTop = {
 
     
   // ------------------------------------------------------------
-  // swipe arrow Animation Variants
+  // Bottom Button Animation Variants
   // ------------------------------------------------------------
+
+  export const bottomButton_animation_1 = {
+    hidden: {
+      y: 10,
+      opacity: 0,
+      transition: {
+        duration: 0.1,
+        ...motion.spring.ui
+      },
+    },
+    show: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.1,
+        ...motion.spring.ui
+      },
+    },
+  }
+
+  export const bottomButton_animation_2 = {
+    hidden: {
+      y: 10,
+      opacity: 0,
+      transition: {
+        duration: 0.1,
+        delay: 0.2, 
+        ...motion.spring.ui
+      },
+    },
+    show: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.1,
+        delay: 0.2,
+        ...motion.spring.ui
+      },
+    },
+  }
 
   // ------------------------------------------------------------
   // ------------------------------------------------------------

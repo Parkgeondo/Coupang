@@ -63,12 +63,13 @@ const Review = ({ Ypoint, swipeData, reviewText, setReviewText, setShowStarAnima
     }, [photoUrls]);
 
     return (
-        <motion.div class="w-[343px] h-[476px] rounded-[16px] bg-white flex flex-col items-center [perspective:9000px] overflow-hidden absolute p-[20px]"
+        <motion.div className="w-[343px] h-[476px] rounded-[16px] bg-white flex flex-col items-center [perspective:9000px] overflow-hidden absolute p-[20px]"
             variants={EnterFromBottom}
             custom={Ypoint}
             initial="show"
         >
-             <p className="text-[#222B32] text-base font-bold text-center w-full h-[42px] relative">
+            {/* <p> 안에 <div>(motion.div) 넣으면 HTML 규칙 위반 + hydration 오류 → div 사용 */}
+            <div className="text-[#222B32] text-base font-bold text-center w-full h-[42px] relative">
                 <motion.div className="absolute w-full top-0" initial="phase1" animate={controls} variants={reviewTitle_text_animate_1}>                
                     사용자님의 후기 말투를 기반으로
                 </motion.div>
@@ -78,7 +79,7 @@ const Review = ({ Ypoint, swipeData, reviewText, setReviewText, setShowStarAnima
                 <motion.div className="absolute w-full top-[24px]" initial="phase1" animate={controls} variants={reviewTitle_text_animate_3}>                
                     AI 후기를 작성했어요!
                 </motion.div>
-            </p>
+            </div>
 
             {/* 스켈레톤 UI와 텍스트 영역을 감싸는 컨테이너 */}
             {/* 또한, 이곳에서 stage가 review일때, 1초뒤 스켈레톤이 보이고 2초뒤, 텍스트가 보이도록 설계 */}

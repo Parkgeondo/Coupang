@@ -12,9 +12,9 @@ const FoodThumbnail = ({ Ypoint, showStarAnimation, setShowStarAnimation, swipeD
 
     useEffect(() => {
       swipeData.forEach(item => {
-        if (item.direction === "left") {
+        if (item.direction === "right") {
           setStarCount(starCount + 1);
-        } else if (item.direction === "right") {
+        } else if (item.direction === "left") {
           setStarCount(starCount);
         }
       });
