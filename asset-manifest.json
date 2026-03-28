@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.css": "/Coupang/static/css/main.552d2e30.css",
-    "main.js": "/Coupang/static/js/main.29bc7d6b.js",
+    "main.css": "/Coupang/static/css/main.dd3e10cf.css",
+    "main.js": "/Coupang/static/js/main.e6dd3e34.js",
     "static/js/939.737cfdb0.chunk.js": "/Coupang/static/js/939.737cfdb0.chunk.js",
     "static/js/929.2ab1be46.chunk.js": "/Coupang/static/js/929.2ab1be46.chunk.js",
     "static/js/64.69ab5368.chunk.js": "/Coupang/static/js/64.69ab5368.chunk.js",
     "static/js/511.d160d105.chunk.js": "/Coupang/static/js/511.d160d105.chunk.js",
-    "static/js/432.f1ddd94c.chunk.js": "/Coupang/static/js/432.f1ddd94c.chunk.js",
+    "static/js/432.baa89a78.chunk.js": "/Coupang/static/js/432.baa89a78.chunk.js",
     "static/js/271.f9148611.chunk.js": "/Coupang/static/js/271.f9148611.chunk.js",
     "static/js/453.f34f9115.chunk.js": "/Coupang/static/js/453.f34f9115.chunk.js",
     "static/js/886.ff6ac1ef.chunk.js": "/Coupang/static/js/886.ff6ac1ef.chunk.js",
@@ -16,19 +16,19 @@
     "static/media/Star.svg": "/Coupang/static/media/Star.3b17ac5a1c0de31ea023f7876ba16149.svg",
     "index.html": "/Coupang/index.html",
     "static/media/slideArrow.svg": "/Coupang/static/media/slideArrow.ba6f9e5b058639d85375628053e55d9c.svg",
-    "main.552d2e30.css.map": "/Coupang/static/css/main.552d2e30.css.map",
-    "main.29bc7d6b.js.map": "/Coupang/static/js/main.29bc7d6b.js.map",
+    "main.dd3e10cf.css.map": "/Coupang/static/css/main.dd3e10cf.css.map",
+    "main.e6dd3e34.js.map": "/Coupang/static/js/main.e6dd3e34.js.map",
     "939.737cfdb0.chunk.js.map": "/Coupang/static/js/939.737cfdb0.chunk.js.map",
     "64.69ab5368.chunk.js.map": "/Coupang/static/js/64.69ab5368.chunk.js.map",
     "511.d160d105.chunk.js.map": "/Coupang/static/js/511.d160d105.chunk.js.map",
-    "432.f1ddd94c.chunk.js.map": "/Coupang/static/js/432.f1ddd94c.chunk.js.map",
+    "432.baa89a78.chunk.js.map": "/Coupang/static/js/432.baa89a78.chunk.js.map",
     "271.f9148611.chunk.js.map": "/Coupang/static/js/271.f9148611.chunk.js.map",
     "453.f34f9115.chunk.js.map": "/Coupang/static/js/453.f34f9115.chunk.js.map",
     "886.ff6ac1ef.chunk.js.map": "/Coupang/static/js/886.ff6ac1ef.chunk.js.map",
     "896.e9a0fad8.chunk.js.map": "/Coupang/static/js/896.e9a0fad8.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.552d2e30.css",
-    "static/js/main.29bc7d6b.js"
+    "static/css/main.dd3e10cf.css",
+    "static/js/main.e6dd3e34.js"
   ]
 }
