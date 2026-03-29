@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Coupang/static/css/main.dd3e10cf.css",
-    "main.js": "/Coupang/static/js/main.e6dd3e34.js",
+    "main.js": "/Coupang/static/js/main.22fe04c5.js",
     "static/js/939.737cfdb0.chunk.js": "/Coupang/static/js/939.737cfdb0.chunk.js",
     "static/js/929.2ab1be46.chunk.js": "/Coupang/static/js/929.2ab1be46.chunk.js",
     "static/js/64.69ab5368.chunk.js": "/Coupang/static/js/64.69ab5368.chunk.js",
@@ -17,7 +17,7 @@
     "index.html": "/Coupang/index.html",
     "static/media/slideArrow.svg": "/Coupang/static/media/slideArrow.ba6f9e5b058639d85375628053e55d9c.svg",
     "main.dd3e10cf.css.map": "/Coupang/static/css/main.dd3e10cf.css.map",
-    "main.e6dd3e34.js.map": "/Coupang/static/js/main.e6dd3e34.js.map",
+    "main.22fe04c5.js.map": "/Coupang/static/js/main.22fe04c5.js.map",
     "939.737cfdb0.chunk.js.map": "/Coupang/static/js/939.737cfdb0.chunk.js.map",
     "64.69ab5368.chunk.js.map": "/Coupang/static/js/64.69ab5368.chunk.js.map",
     "511.d160d105.chunk.js.map": "/Coupang/static/js/511.d160d105.chunk.js.map",
@@ -29,6 +29,6 @@
   },
   "entrypoints": [
     "static/css/main.dd3e10cf.css",
-    "static/js/main.e6dd3e34.js"
+    "static/js/main.22fe04c5.js"
   ]
 }
