@@ -14,7 +14,6 @@ const TextRender = ({ text, dragLeftOrRight }) => {
     return (
       <motion.div
         className="absolute mt-[15px] z-[0]"
-        variants={textContainer}
         initial="hidden"
         animate="show"
         exit="exit"
@@ -31,7 +30,6 @@ const TextRender = ({ text, dragLeftOrRight }) => {
                 : 'text-[#5D7082]'
               }
             ${dragLeftOrRight === 'left'|| dragLeftOrRight === 'right' ? 'text-[24px] ' : 'text-[20px] '} font-bold inline-block `}
-            variants={dragLeftOrRight === 'left' ? textLetter_left : dragLeftOrRight === 'right' ? textLetter_right : textLetter}
             custom={[5, i]}
           >
             {ch === " " ? "\u00A0" : ch}

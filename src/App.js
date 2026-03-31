@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
+
 import EventPage from './page/EventPage';
+
 import { motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+
 import Lottie from 'lottie-react';
 import animationData from './Lottie/animation.json';
-import { AnimatePresence } from 'framer-motion';
+
+import RippleButton from './Component/RippleButton';
 
 // src/assets/categories 이미지 import (파일명: categories_1.png 형식)
 import cat1 from './assets/categories/categories_1.png';
@@ -25,6 +30,8 @@ import freeDeliveryIcon from './assets/freeDelivery/freeDeliveryIcon.png';
 import freeDelivery from './assets/freeDelivery/freeDelivery.png';
 import right from './assets/freeDelivery/right.png';
 import locationIcon from './assets/location/location.png';
+import doNotShow_1 from './assets/doNotShow/check_1.png';
+import doNotShow_2 from './assets/doNotShow/check_2.png';
 
 import { useResizeObserver } from './Utile/resizeObserver';
 import { dimmedBackground, dimmedScale, EnterFromBottom_modal, button_animate, bottomButton_animation_1, bottomButton_animation_2 } from './Animation_Variants/variants';
@@ -83,7 +90,7 @@ const FREE_DELIVERY_ITEMS = [
   {
     id: 1,
     discount: '29%',
-    img: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&h=300&fit=crop', // 샌드위치 이미지 (임시)
+    img: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&h=300&fit=crop',
     badgeText: '하나만 담아도 무료배달',
     title: '베이컨 에그(BLT)\n샌드위치',
     price: '7,800원',
@@ -96,7 +103,7 @@ const FREE_DELIVERY_ITEMS = [
   {
     id: 2,
     discount: '45%',
-    img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&h=300&fit=crop', // 볶음밥 이미지 (임시)
+    img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&h=300&fit=crop',
     badgeText: '하나만 담아도 무료배달',
     title: '[하나만]불닭 필라프',
     price: '9,900원',
@@ -110,7 +117,7 @@ const FREE_DELIVERY_ITEMS = [
   {
     id: 3,
     discount: '47%',
-    img: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&h=300&fit=crop', // 튀김 이미지 (임시)
+    img: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&h=300&fit=crop',
     badgeText: '하나만 담아도 무료배달',
     title: '튀김(야채,고구마...)\n묵6새우...',
     price: '8,000원',
@@ -325,16 +332,14 @@ const BottomNav = ({ stage }) => {
   );
 };
 
-const BoottmButton = ({ onRegisterClick, EventPage_State, stage, reviewText, setReviewText, setShowLetterAnimation, showStarAnimation, setStage, showAgain, setShowAgain, swipeLeftRef }) => {
+const BoottmButton = ({ onRegisterClick, EventPage_State, setEventPage_State, stage, reviewText, setReviewText, setShowLetterAnimation, showStarAnimation, setStage, showAgain, setShowAgain, swipeLeftRef }) => {
+
   const isActive = reviewText.length >= 20;
 
   // 하단 버튼 영역만 show/hidden 제어 (등록하기 클릭 시 이 부분만 hidden)
   const [bottomShow, setBottomShow] = useState(true);
 
-  useEffect(() => {
-    console.log(stage);
-  }, [stage]);
-
+  // 다시하기 버튼 눌렀을때 페이지 초기화
   const handleRegisterClick = () => {
     setBottomShow(false);
     setShowLetterAnimation(true);
@@ -342,20 +347,17 @@ const BoottmButton = ({ onRegisterClick, EventPage_State, stage, reviewText, set
 
   return (
     <>
-      {/* 그라데이션 배경 오버레이 */}
+      {/* 하단 - 흰색 그라데이션 부분 */}
       <motion.div className="fixed -bottom-full left-0 right-0 w-full max-w-[393px] mx-auto pointer-events-none z-10"
         variants={EnterFromBottom_modal}
         custom={100}
         initial="hidden"
         animate={stage === "event" && bottomShow ? "show" : "hidden"}
       >
-        {/* 페이드 영역 */}
-        {/* <div className="h-[150px] bg-gradient-to-b from-transparent via-white/50 to-white" /> */}
-        {/* 완전 흰색 영역 (108px) */}
         <div className="h-[240px] bg-[linear-gradient(to_top_in_oklch,white_0px,white_130px,oklch(1_0_0_/_0)_100%)]" />
       </motion.div>
 
-      {/* 하단 — 등록하기 클릭 시 이 블록만 hidden */}
+      {/* 하단 — 등록하기 클릭 시 아래로 이동 */}
       <motion.div
         className="fixed bottom-0 w-full flex max-w-[393px] h-[108px] flex-col z-50 px-[25px] z-0"
         variants={EnterFromBottom_modal}
@@ -372,35 +374,20 @@ const BoottmButton = ({ onRegisterClick, EventPage_State, stage, reviewText, set
               animate="show"
               exit="hidden"
             >
-              {/* <button className="w-full h-[55px] font-bold border border-[#00AFFE] text-[#00AFFE] rounded-[4px] bg-white"
-              onClick={() => setStage(null)}
-              >
-                <span>별로였어요</span>
-              </button>
-              <motion.button
-                onClick={handleRegisterClick}
-                disabled={!(showStarAnimation && isActive)}
-                className="w-full h-[55px] font-bold rounded-[4px] disabled:cursor-not-allowed"
-                variants={button_animate}
-                animate={showStarAnimation && isActive ? "active" : "inactive"}
-              >
-                <span>좋았어요</span>
-              </motion.button> */}
-              <motion.button
-                type="button"
+              <RippleButton
+                className="bg-[#65767E] text-white"
                 onClick={() => swipeLeftRef?.current?.('left')}
-                className="w-full h-[55px] font-bold rounded-[4px] disabled:cursor-not-allowed bg-[#65767E] text-white"
               >
-                <span>별로였어요</span>
-              </motion.button>
-              <motion.button
-                className="w-full h-[55px] font-bold rounded-[4px] disabled:cursor-not-allowed bg-[#01ABFB] text-white"
+                별로였어요
+              </RippleButton>
+              <RippleButton
+                className="bg-[#01ABFB] text-white"
                 onClick={() => swipeLeftRef?.current?.('right')}
                 initial="hidden"
                 animate="show"
               >
-                <span>좋았어요</span>
-              </motion.button>
+                좋았어요
+              </RippleButton>
             </motion.div>
           )}
         </AnimatePresence>
@@ -411,21 +398,23 @@ const BoottmButton = ({ onRegisterClick, EventPage_State, stage, reviewText, set
               animate="show"
               exit="hidden"
             >
-              <motion.button
-                  className="w-full h-[55px] font-bold rounded-[4px] disabled:cursor-not-allowed bg-[#ffffff] text-[#01ABFB] border border-[#01ABFB]"
-                >
-                  <span>다시하기</span>
-                </motion.button>
-                <motion.button
-                  onClick={handleRegisterClick}
-                  disabled={!(showStarAnimation && isActive)}
-                  initial="inactive"
-                  variants={button_animate}
-                  animate={showStarAnimation && isActive ? "active" : "inactive"}
-                  className="w-full h-[55px] font-bold rounded-[4px] disabled:cursor-not-allowed bg-[#01ABFB] text-white"
-                >
-                  <span>등록하기</span>
-                </motion.button>
+              <RippleButton
+                className="border border-[#01ABFB] bg-[#ffffff] text-[#01ABFB]"
+                rippleClassName="bg-[#00B0FF]"
+                onClick={() => setEventPage_State('swipe')}
+              >
+                다시하기
+              </RippleButton>
+              <RippleButton
+                onClick={handleRegisterClick}
+                disabled={!(showStarAnimation && isActive)}
+                initial="inactive"
+                variants={button_animate}
+                animate={showStarAnimation && isActive ? 'active' : 'inactive'}
+                className="bg-[#01ABFB] text-white"
+              >
+                등록하기
+              </RippleButton>
             </motion.div>
           )}
           </div>
@@ -433,7 +422,7 @@ const BoottmButton = ({ onRegisterClick, EventPage_State, stage, reviewText, set
         onClick={() => setShowAgain(!showAgain)}
         >
           <img
-            src={`${process.env.PUBLIC_URL}/assets/${showAgain ? 'check_2.png' : 'check_1.png'}`}
+            src={showAgain ? doNotShow_2 : doNotShow_1}
             className="w-[16px] h-[16px] mr-[6px]"
           />
           <span className={`${showAgain ? 'text-[#455869]' : 'text-gray-400'} mt-[2px]`}>이 화면 다시 보지 않기</span>
@@ -445,9 +434,9 @@ const BoottmButton = ({ onRegisterClick, EventPage_State, stage, reviewText, set
 
 function App() {
 
-    // --- 상태변화 ---------------------------------------------------------------------------------------------------------------------------------------------------------
-    const { ref: containerRef, width, height } = useResizeObserver();
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // --- 상태변화 ---------------------------------------------------------------------------------------------------------------------------------------------------------
+  const { ref: containerRef, width, height } = useResizeObserver();
+  // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   // 1초 후 레이아웃 나타나게 만드는 함수
   const [stage, setStage] = useState(null);
@@ -455,23 +444,21 @@ function App() {
   const [showAnimation, setShowAnimation] = useState(false);
   // 등록하기 버튼 누를 시 편지 애니메이션 표시 여부
   const [showLetterAnimation, setShowLetterAnimation] = useState(false);
-  // reviewText: 리뷰 텍스트 상태 (Review와 BoottmButton에서 공유)
+  // reviewText: 리뷰 텍스트 상태
   const [reviewText, setReviewText] = useState("");
   // 별 애니메이션 재생 여부 (EventPage / FoodThumbnail / Review에서 공유)
   const [showStarAnimation, setShowStarAnimation] = useState(false);
-  // 이 화면 다시 보지 않기 (BoottmButton / ThanksPage에서 공유)
+  // 이 화면 다시 보지 않기 아랫쪽 토글 버튼
   const [showAgain, setShowAgain] = useState(false);
-  /** EventPage 내부 단계: swipe | review (원래 EventPage 로컬 state) */
+  // EventPage 단계, BottomeButton에서 사용하기 위해 올려놓음
   const [EventPage_State, setEventPage_State] = useState("swipe");
 
-  // lottieRef: Lottie 애니메이션 참조
-  const lottieRef = useRef(null);
-
-  /** 하단 '별로였어요' → CardSwape 현재 카드 왼쪽 스와이프 */
+  /** 버튼을 눌렀을때 카드를 왼쪽 혹은 오른쪽으로 슬라이드 되게 만드는 함수를 담는 변수*/
   const swipeLeftRef = useRef(null);
 
-  /** 이벤트 화면에 다시 진입할 때만 카드 단계로 초기화 (stage가 event가 아님 → event) */
+  /** 이벤트 화면에 다시 진입할 때만 카드 단계로 초기화, 지금은 쓰이지 않는 듯*/
   const prevAppStageRef = useRef(null);
+  
   useEffect(() => {
     if (stage === "event" && prevAppStageRef.current !== "event") {
       setEventPage_State("swipe");
@@ -479,6 +466,7 @@ function App() {
     prevAppStageRef.current = stage;
   }, [stage]);
   
+  // 1초 후 스와이프 화면으로 이동
   useEffect(() => {
     const timer = setTimeout(() => {
       setStage("event");
@@ -539,6 +527,8 @@ function App() {
 
         {stage === "event" && (
           <EventPage
+            stage={stage}
+            setStage={setStage}
             reviewText={reviewText}
             setReviewText={setReviewText}
             showLetterAnimation={showLetterAnimation}
@@ -552,7 +542,7 @@ function App() {
           />
         )}
         <BottomNav stage={stage}/>
-        {stage === "event" && <BoottmButton EventPage_State={EventPage_State} stage={stage} reviewText={reviewText} setReviewText={setReviewText} setShowLetterAnimation={setShowLetterAnimation} showStarAnimation={showStarAnimation} setStage={setStage} showAgain={showAgain} setShowAgain={setShowAgain} swipeLeftRef={swipeLeftRef} />}
+        {stage === "event" && <BoottmButton EventPage_State={EventPage_State} setEventPage_State={setEventPage_State} stage={stage} reviewText={reviewText} setReviewText={setReviewText} setShowLetterAnimation={setShowLetterAnimation} showStarAnimation={showStarAnimation} setStage={setStage} showAgain={showAgain} setShowAgain={setShowAgain} swipeLeftRef={swipeLeftRef} />}
 
         {/* Lottie 애니메이션 오버레이 */}
         {showAnimation && (
@@ -565,9 +555,7 @@ function App() {
               }}
             >
               <Lottie
-                lottieRef={lottieRef}
                 animationData={animationData}
-                // onComplete={() => setShowAnimation(false)}
                 loop={false}
                 autoplay
                 style={{

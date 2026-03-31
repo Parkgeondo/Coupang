@@ -8,7 +8,6 @@ import lottieAnimation3 from '../Lottie/3.json';
 import lottieAnimation4 from '../Lottie/4.json';
 import swipeAnimation from '../Lottie/swipe.json';
 import ThreeScene from './ThreeScene';
-import { cardSwipe } from '../Animation_Variants/variants';
 import { swipe_circle, afterimage } from '../Animation_Variants/variants';
 import { motion as motionTokens } from '../Animation_Variants/motionTokens';
 import TextUpandDown from '../Utile/textUpandDown';

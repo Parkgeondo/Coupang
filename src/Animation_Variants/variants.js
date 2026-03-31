@@ -1,12 +1,19 @@
 import { expression } from "three/tsl";
 import { motion } from "./motionTokens";
 
-
+  //음식 별점 타이틀 내려올때
 export const EnterFromTop = {
     show: (custom) => ({ transition: motion.spring.ui, y: `calc(${custom}vh - 50% - 290px)` }),
     hidden: (custom) => ({ transition: motion.spring.ui, y: `-${(100 - custom)/3}vh` })
-  };    
+  };
 
+  //x 리뷰작성 상단에서 내려올때
+  export const EnterTitle = {
+    show: (custom) => ({ transition: motion.spring.ui, y: `calc(${custom}vh)` }),
+    hidden: (custom) => ({ transition: motion.spring.ui, y: `-${(100 - custom)/3}vh` })
+  };
+
+  // 카드 스와이프 아래에서 올라올떼
   export const EnterFromBottom = {
     show: (custom) => ({ transition: motion.spring.ui, y: `calc(${custom}vh - 50%)` }),
     hidden: (custom) => ({ transition: motion.spring.ui, y: "100vh" }),
@@ -14,25 +21,19 @@ export const EnterFromTop = {
     })
   };    
 
-  export const EnterFromBottom_modal = {
-    show: (custom) => ({ transition: motion.spring.ui, y: `-${custom}vh` }),
-    hidden: (custom) => ({ transition: motion.spring.ui, y: `${(100 - custom)/3}vh` })
-  };    
-
+  //카드 스와이프 화면일때 배경 흐릿하게
   export const dimmedBackground = {
-    show: () => ({ transition: motion.spring.ui, opacity: 1, backdropFilter: "blur(5px)"}),
+    show: () => ({ transition: motion.spring.ui, opacity: 1, backdropFilter: "blur(10px)"}),
     hidden: () => ({ transition: motion.spring.ui, opacity: 0, backdropFilter: "blur(0px)"})
   };    
 
+  //카드 스와이프 화면일때 배경 축소
   export const dimmedScale = {
     show: () => ({ transition: motion.spring.ui, scale: 0.95}),
     hidden: () => ({ transition: motion.spring.ui, scale: 1})
   };
 
-  export const cardSwipe = {
-    variantSwipeX: (custom) => ({ transition: motion.spring.ui, x: custom }),
-  };
-
+  //상단 토글 애니메이션
   export const ToggleItem_animate = {
     toggle_show: (custom) => {
       const width = custom?.width+16 || 7;
@@ -41,7 +42,7 @@ export const EnterFromTop = {
         transition: motion.elasticity.ui, 
         width: width,
         height: height,
-        backgroundColor: custom?.direction === 'left' ? '#ffffff' : custom?.direction === 'right' ? '#F3F5F8' : '#017BD9'
+        backgroundColor: custom?.direction === 'left' ? '#F3F5F8' : custom?.direction === 'right' ? '#ffffff' : '#ffffff'
       };
     },
     toggle_hidden: (c) => ({
@@ -84,51 +85,6 @@ export const EnterFromTop = {
     },
   };
 
-  export const textContainer = {
-    hidden: {},
-    show: {
-      transition: {
-        type: motion.spring.ui,
-        delayChildren: 0.18,
-        staggerChildren: 0.02,
-      },
-    },
-    exit: {
-      transition: {
-        type: motion.spring.ui,
-        staggerChildren: 0.02,
-      },
-    },
-  };
-  
-  export const textLetter = {
-    hidden: ([d, i]) => ({ y: -d, opacity: 0 }),
-    show: { y: 0, opacity: 1, transition: { duration: 0.18, ease: "easeOut" } },
-    exit: ([d, i]) => ({ y: d, opacity: 0, transition: { duration: 0.14, ease: "easeIn" } }),
-  };
-
-  export const textLetter_left = {
-    hidden: ([d, i]) => ({ y: 0, opacity: 0, scale: 1 }),
-    show: ([d, i]) =>{ return { y: 0, opacity: 1, scale: [1, 1.2, 1.2, 1], x: [0, (i-2)*3, (i-2)*3.5, 0], transition: { duration: 0.6, ease: "easeOut" } } },
-    exit: ([d, i]) => ({ y: 0, opacity: 0, scale: 1, transition: { duration: 0.14, ease: "easeIn" } }),
-  };
-
-  export const textLetter_right = {
-    hidden: ([d, i]) => ({ y: 0, opacity: 0 }),
-    show: ([d, i]) =>{ return { y: [0, 10], opacity: 1, transition: { duration: 1.2, ease: "easeOut" } } },
-    exit: ([d, i]) => ({ y: 0, opacity: 0, scale: 1, transition: { duration: 0.14, ease: "easeIn" } }),
-  };
-
-  export const skeletonAndtextarea_animate = {
-    hidden: (custom) => ({
-    }),
-    show: (custom) => ({
-      transition: {
-        delay: custom,
-      }
-    }),
-  }
-
   // 사용자님의 후기 말투를 기반으로
   export const reviewTitle_text_animate_1 = {
     phase1: {
@@ -162,19 +118,27 @@ export const EnterFromTop = {
     },
   }
 
+  // 리뷰가 AI로 인해서 로딩될떄 애니메이션
   export const skeleton_animate = {
     phase1: { opacity: 1, y: 0 },                 
     phase2: { opacity: 0, y: -10 },               
     phase3: { opacity: 0, y: -10 },  
-
   }
 
+  //리뷰가 완성되었을 떄 애니메이션
   export const textarea_animate = {
     phase1: { opacity: 0, y: 10 },          
     phase2: { opacity: 1, y: 0 },      
     phase3: { opacity: 1, y: 0 },
   }
 
+  //아래쪽 버튼 모달 부분 아래에서 올라올때
+  export const EnterFromBottom_modal = {
+    show: (custom) => ({ transition: motion.spring.ui, y: `-${custom}vh` }),
+    hidden: (custom) => ({ transition: motion.spring.ui, y: `${(100 - custom)/3}vh` })
+  };    
+  
+  //등록하기 버튼이 활성화될떄 애니메이션
   export const button_animate = {
     active: {
       backgroundColor: "#00AFFE",
@@ -188,6 +152,7 @@ export const EnterFromTop = {
     }
   }
 
+  //이벤트 페이지가 편지에 들어갈떄 애니메이션
   export const review_animation = {
     phase1: {
       scale: 1,
@@ -210,7 +175,7 @@ export const EnterFromTop = {
     },
   }
 
-
+  //편지 뒷장 애니메이션
   export const letter_animation = {
     phase1: {
       opacity: 0,
@@ -279,7 +244,7 @@ export const EnterFromTop = {
     },
   }
 
-  // 카드 스와이프 영역 및 별점 영역 클리핑
+  // 리뷰 영역이 편지로 들어갈떄 자연스럽게 들어가도록 클리핑
   export const clipping_animation = {
     phase1: {
       clipPath: 'inset(0 0 0% 0)'
@@ -295,7 +260,7 @@ export const EnterFromTop = {
   // ThanksPage Animation Variants
   // ------------------------------------------------------------
 
-
+  //리뷰 등록이 완료되었습니다. 애니메이션
   export const thanks_animation = {
     initial: {
       opacity: 0,
@@ -323,6 +288,7 @@ export const EnterFromTop = {
   // FoodThumbnail Animation Variants
   // ------------------------------------------------------------
 
+  //별 색상 전환 애니메이션
   export const FoodThumbnail_animation = {
     hidden: {},
     show: {
@@ -344,7 +310,6 @@ export const EnterFromTop = {
       },
     }),
   }
-  
 
   // ------------------------------------------------------------
   // ------------------------------------------------------------
@@ -354,11 +319,13 @@ export const EnterFromTop = {
   // Bottom Button Animation Variants
   // ------------------------------------------------------------
 
+  //별로였어요, 좋았어요 버튼 애니메이션
   export const bottomButton_animation_1 = {
     hidden: {
       y: 10,
       opacity: 0,
       transition: {
+        delay: 0.7, 
         duration: 0.1,
         ...motion.spring.ui
       },
@@ -367,19 +334,21 @@ export const EnterFromTop = {
       y: 0,
       opacity: 1,
       transition: {
+        delay: 0.7, 
         duration: 0.1,
         ...motion.spring.ui
       },
     },
   }
 
+  //다시하기, 등록하기 버튼 애니메이션
   export const bottomButton_animation_2 = {
     hidden: {
       y: 10,
       opacity: 0,
       transition: {
         duration: 0.1,
-        delay: 0.2, 
+        delay: 0.9, 
         ...motion.spring.ui
       },
     },
@@ -388,7 +357,7 @@ export const EnterFromTop = {
       opacity: 1,
       transition: {
         duration: 0.1,
-        delay: 0.2,
+        delay: 0.9,
         ...motion.spring.ui
       },
     },
@@ -396,14 +365,3 @@ export const EnterFromTop = {
 
   // ------------------------------------------------------------
   // ------------------------------------------------------------
-
-  
-export const swipe_circle = {
-  animate: {
-    x: [0, 50, 0, 50, 0],
-  },
-  transition: {
-    duration: 4.5,
-    ease: "easeInOut",
-  },
-}

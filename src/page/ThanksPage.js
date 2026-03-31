@@ -5,6 +5,7 @@ import characterAnimation from "../Lottie/character_animation.json";
 import { EnterFromTop, thanks_animation } from "../Animation_Variants/variants";
 import { useState } from "react";
 import speechBubble from "../assets/Bubble/speechBubble.png";
+import cancelIcon from "../assets/cancel.png";
 import RippleImage from "../Utile/displacement";
 
 const ThanksPage = ({}) => {
@@ -25,16 +26,8 @@ const ThanksPage = ({}) => {
 
     return (
         <motion.div
-          className="w-full h-full flex flex-col items-center justify-between overflow-hidden relative p-[25px] z-[100] bg-cover bg-center bg-no-repeat"
+          className="w-full h-full flex flex-col-reverse items-center justify-between overflow-hidden relative p-[25px] z-[100] bg-cover bg-center bg-no-repeat"
         >
-            <div className="w-full flex items-center justify-start gap-[22px]">
-                <img
-                    src={`${process.env.PUBLIC_URL}/assets/cancel.png`}
-                    alt="ThanksPage"
-                    className="w-[22] h-[22px]"
-                />
-                <p className="text-[20px] font-bold text-white">후기 작성</p>
-            </div>
             <motion.div
                 className="w-[369px] h-[337px] absolute top-[50%]"
                 variants={thanks_animation}
