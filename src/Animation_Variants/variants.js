@@ -39,7 +39,7 @@ export const EnterFromTop = {
       const width = custom?.width+16 || 7;
       const height = custom?.height+6 || 7;
       return { 
-        transition: motion.elasticity.ui, 
+        transition: motion.elasticity.ui,
         width: width,
         height: height,
         backgroundColor: custom?.direction === 'left' ? '#F3F5F8' : custom?.direction === 'right' ? '#ffffff' : '#ffffff'
@@ -137,7 +137,7 @@ export const EnterFromTop = {
     show: (custom) => ({ transition: motion.spring.ui, y: `-${custom}vh` }),
     hidden: (custom) => ({ transition: motion.spring.ui, y: `${(100 - custom)/3}vh` })
   };    
-  
+
   //등록하기 버튼이 활성화될떄 애니메이션
   export const button_animate = {
     active: {
@@ -175,7 +175,7 @@ export const EnterFromTop = {
     },
   }
 
-  //편지 뒷장 애니메이션
+  //편지 앞뒷장 애니메이션
   export const letter_animation = {
     phase1: {
       opacity: 0,

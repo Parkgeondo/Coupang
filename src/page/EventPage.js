@@ -60,7 +60,7 @@ const EventPage = ({
 
     return (
         <>
-            {/* 편지 포장 부분 */}
+            {/* 편지 닫혀있는 모양 부분 */}
             <motion.div className="absolute z-[100] w-full h-full flex items-center justify-center pointer-events-none "
                 variants={sealed}
                 initial="phase1"
