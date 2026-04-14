@@ -33,6 +33,13 @@ export const EnterFromTop = {
     hidden: () => ({ transition: motion.spring.ui, scale: 1})
   };
 
+  /** 리뷰 이벤트 전체 오버레이: 아래에서 올라왔다가 X로 닫을 때 아래로 내려감 */
+  export const eventStageShell = {
+    hidden: { y: "100%", transition: motion.spring.ui },
+    show: { y: 0, transition: motion.spring.ui },
+    exit: { y: "100%", transition: motion.spring.ui },
+  };
+
   //상단 토글 애니메이션
   export const ToggleItem_animate = {
     toggle_show: (custom) => {

@@ -50,7 +50,7 @@ const Card = ({ text, img, useThree, index, Zindex, step_card, setStepCard, onCo
 
     /** 버튼 등으로 왼쪽 스와이프와 동일 동작 (현재 맨 앞 카드일 때만 ref에 등록) */
     const performLeftSwipe = useCallback((direction) => {
-        animate(x, direction === 'left' ? -500 : 500, motionTokens.spring.ui);
+        animate(x, direction === 'left' ? -500 : 500, motionTokens.card_animation.ui);
         onSwipe(step_card, direction); // 스와이프 데이터 저장
         Zindex.set(Zindex.get() + DISTANCE);
         setStepCard(step_card + 1);
@@ -148,13 +148,14 @@ const CardSwape = ({ Ypoint, onComplete, swipeData, setSwipeData, swipeLeftRef }
     
     
     return (
-        <motion.div className="w-[343px] h-[476px] rounded-[16px] bg-gradient-to-b from-[#00AFFE] to-[#0069CC] flex flex-col items-center [perspective:9000px] overflow-hidden absolute"
-            variants={EnterFromBottom}
-            custom={Ypoint}
-            initial="hidden"
-            animate="show"
-            exit="exit"
-        >
+        <AnimatePresence>
+            <motion.div className="w-[343px] h-[476px] rounded-[16px] bg-gradient-to-b from-[#00AFFE] to-[#0069CC] flex flex-col items-center [perspective:9000px] overflow-hidden absolute"
+                variants={EnterFromBottom}
+                custom={Ypoint}
+                initial="hidden"
+                animate="show"
+                exit="exit"
+            >
             <div className="text-white text-base font-bold text-center mt-[20px] relative">
                 <motion.div 
                     className="absolute top-[-8px] left-[44%] w-[55px]"
@@ -184,9 +185,10 @@ const CardSwape = ({ Ypoint, onComplete, swipeData, setSwipeData, swipeLeftRef }
                     {CATEGORIES.map((category, index) => (
                         <Card key={category.id} text={category.name} img={category.img} useThree={category.useThree} index={index} Zindex={Zindex} step_card={step_card} setStepCard={setStepCard} onComplete={onComplete} onSwipe={handleSwipe} swipeLeftRef={swipeLeftRef}/>
                     ))}
-                </motion.div>
-            </div>
-        </motion.div>
+                    </motion.div>
+                </div>
+            </motion.div>
+        </AnimatePresence>
     )
 }
 export default CardSwape;

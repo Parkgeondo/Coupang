@@ -524,23 +524,22 @@ function App() {
 
           <FreeDeliverySection />
         </motion.div>
-
-        {stage === "event" && (
-          <EventPage
-            stage={stage}
-            setStage={setStage}
-            reviewText={reviewText}
-            setReviewText={setReviewText}
-            showLetterAnimation={showLetterAnimation}
-            setShowLetterAnimation={setShowLetterAnimation}
-            setShowAnimation={setShowAnimation}
-            showStarAnimation={showStarAnimation}
-            setShowStarAnimation={setShowStarAnimation}
-            swipeLeftRef={swipeLeftRef}
-            EventPage_State={EventPage_State}
-            setEventPage_State={setEventPage_State}
-          />
-        )}
+          {stage === "event" && (
+            <EventPage
+              stage={stage}
+              setStage={setStage}
+              reviewText={reviewText}
+              setReviewText={setReviewText}
+              showLetterAnimation={showLetterAnimation}
+              setShowLetterAnimation={setShowLetterAnimation}
+              setShowAnimation={setShowAnimation}
+              showStarAnimation={showStarAnimation}
+              setShowStarAnimation={setShowStarAnimation}
+              swipeLeftRef={swipeLeftRef}
+              EventPage_State={EventPage_State}
+              setEventPage_State={setEventPage_State}
+            />
+          )}
         <BottomNav stage={stage}/>
         {stage === "event" && <BoottmButton EventPage_State={EventPage_State} setEventPage_State={setEventPage_State} stage={stage} reviewText={reviewText} setReviewText={setReviewText} setShowLetterAnimation={setShowLetterAnimation} showStarAnimation={showStarAnimation} setStage={setStage} showAgain={showAgain} setShowAgain={setShowAgain} swipeLeftRef={swipeLeftRef} />}
 

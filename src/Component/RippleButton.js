@@ -8,18 +8,28 @@ const RIPPLE_EXIT = { duration: 0.75, ease: [0.4, 0, 0.2, 1] };
 /**
  * 버튼마다 useRipple 인스턴스를 갖도록 분리 — 물결·눌림(scale)이 서로 공유되지 않음
  */
-const RippleButton = ({ children, onClick, className = '', rippleClassName = 'bg-[#252A2C]', ...motionProps }) => {
+const RippleButton = ({ children, onClick, className = '', rippleClassName = 'bg-[#252A2C]', disabled, ...motionProps }) => {
   const { ripples, scale, createRipple, removeRipple } = useRipple();
+
+  const handlePointerDown = (e) => {
+    if (disabled) return;
+    createRipple(e);
+  };
+  const handlePointerUpOrLeave = () => {
+    if (disabled) return;
+    removeRipple();
+  };
 
   return (
     <motion.button
       type="button"
       style={{ scale }}
-      onPointerDown={createRipple}
-      onPointerUp={removeRipple}
-      onPointerLeave={removeRipple}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUpOrLeave}
+      onPointerLeave={handlePointerUpOrLeave}
       onClick={onClick}
       className={`relative h-[55px] w-full overflow-hidden rounded-[4px] py-0 font-bold disabled:cursor-not-allowed ${className}`}
+      disabled={disabled}
       {...motionProps}
     >
       <AnimatePresence initial={false}>

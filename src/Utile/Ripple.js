@@ -7,12 +7,12 @@ export const useRipple = () => {
   const scale = useMotionValue(1);
 
   const createRipple = (e) => {
-    const rect = e.currentTarget.parentElement.getBoundingClientRect();
+    const rect = e.currentTarget.getBoundingClientRect();
     const size = 600;
     const newRipple = {
       id: Date.now(),
-      x: e.clientX - rect.left - size / 2 - 14,
-      y: e.clientY - rect.top - size / 2 - 16,
+      x: e.clientX - rect.left - size / 2,
+      y: e.clientY - rect.top - size / 2,
     };
     setRipples((prev) => [...prev, newRipple]);
     animate(scale, 0.95, { type: "spring", stiffness: 300, damping: 30 });
