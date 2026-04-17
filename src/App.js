@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import EventPage from './page/EventPage';
+import EventPage, { INITIAL_SWIPE_DATA } from './page/EventPage';
 
 import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
@@ -297,7 +297,7 @@ const FreeDeliverySection = () => (
   </div>
 );
 
-const BottomNav = ({ stage }) => {
+const BottomNav = ({ eventOpen }) => {
   const [activeTab, setActiveTab] = useState('home');
   const navItems = [
     { id: 'home', icon: 'fa-house', label: '홈' },
@@ -314,7 +314,7 @@ const BottomNav = ({ stage }) => {
     <nav 
       className="fixed w-full max-w-[393px] bg-white border-t border-gray-100 flex justify-around py-2.5 transition-transform duration-300"
       style={{
-        bottom: stage === 'event' ? `-${navHeight}px` : '0'
+        bottom: eventOpen ? `-${navHeight}px` : '0'
       }}
     >
       {navItems.map((item) => (
@@ -332,7 +332,7 @@ const BottomNav = ({ stage }) => {
   );
 };
 
-const BoottmButton = ({ onRegisterClick, EventPage_State, setEventPage_State, stage, reviewText, setReviewText, setShowLetterAnimation, showStarAnimation, setStage, showAgain, setShowAgain, swipeLeftRef }) => {
+const BoottmButton = ({ onRegisterClick, EventPage_State, setEventPage_State, eventOpen, reviewText, setReviewText, setShowLetterAnimation, showStarAnimation, showAgain, setShowAgain, swipeLeftRef, setSwipeData }) => {
 
   const isActive = reviewText.length >= 20;
 
@@ -352,7 +352,7 @@ const BoottmButton = ({ onRegisterClick, EventPage_State, setEventPage_State, st
         variants={EnterFromBottom_modal}
         custom={100}
         initial="hidden"
-        animate={stage === "event" && bottomShow ? "show" : "hidden"}
+        animate={eventOpen && bottomShow ? "show" : "hidden"}
       >
         <div className="h-[240px] bg-[linear-gradient(to_top_in_oklch,white_0px,white_130px,oklch(1_0_0_/_0)_100%)]" />
       </motion.div>
@@ -363,7 +363,7 @@ const BoottmButton = ({ onRegisterClick, EventPage_State, setEventPage_State, st
         variants={EnterFromBottom_modal}
         custom={0}
         initial="hidden"
-        animate={stage === "event" && bottomShow ? "show" : "hidden"}
+        animate={eventOpen && bottomShow ? "show" : "hidden"}
       >
         <div className="w-full h-[55px]">
         <AnimatePresence>
@@ -401,7 +401,10 @@ const BoottmButton = ({ onRegisterClick, EventPage_State, setEventPage_State, st
               <RippleButton
                 className="border border-[#01ABFB] bg-[#ffffff] text-[#01ABFB]"
                 rippleClassName="bg-[#00B0FF]"
-                onClick={() => setEventPage_State('swipe')}
+                onClick={() => {
+                  setSwipeData(INITIAL_SWIPE_DATA.map((item) => ({ ...item })));
+                  setEventPage_State('swipe');
+                }}
               >
                 다시하기
               </RippleButton>
@@ -438,8 +441,6 @@ function App() {
   const { ref: containerRef, width, height } = useResizeObserver();
   // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  // 1초 후 레이아웃 나타나게 만드는 함수
-  const [stage, setStage] = useState(null);
   // showAnimation: 애니메이션 표시 여부
   const [showAnimation, setShowAnimation] = useState(false);
   // 등록하기 버튼 누를 시 편지 애니메이션 표시 여부
@@ -450,29 +451,26 @@ function App() {
   const [showStarAnimation, setShowStarAnimation] = useState(false);
   // 이 화면 다시 보지 않기 아랫쪽 토글 버튼
   const [showAgain, setShowAgain] = useState(false);
-  // EventPage 단계, BottomeButton에서 사용하기 위해 올려놓음
-  const [EventPage_State, setEventPage_State] = useState("swipe");
+  // EventPage 단계: null = 미오픈, "swipe" | "review" = 이벤트 오픈
+  const [EventPage_State, setEventPage_State] = useState(null);
 
   /** 버튼을 눌렀을때 카드를 왼쪽 혹은 오른쪽으로 슬라이드 되게 만드는 함수를 담는 변수*/
   const swipeLeftRef = useRef(null);
 
-  /** 이벤트 화면에 다시 진입할 때만 카드 단계로 초기화, 지금은 쓰이지 않는 듯*/
-  const prevAppStageRef = useRef(null);
-  
-  useEffect(() => {
-    if (stage === "event" && prevAppStageRef.current !== "event") {
-      setEventPage_State("swipe");
-    }
-    prevAppStageRef.current = stage;
-  }, [stage]);
-  
-  // 1초 후 스와이프 화면으로 이동
+  const [swipeData, setSwipeData] = useState(() =>
+    INITIAL_SWIPE_DATA.map((item) => ({ ...item }))
+  );
+
+  const eventOpen =
+    EventPage_State === "swipe" || EventPage_State === "review";
+
+  // 1초 후 이벤트(스와이프) 화면으로 이동
   useEffect(() => {
     const timer = setTimeout(() => {
-      setStage("event");
-    }, 1000); // 1초 후 event로 변경
-    
-    return () => clearTimeout(timer); // cleanup
+      setEventPage_State("swipe");
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -484,20 +482,22 @@ function App() {
       >
 
         {/* 딤드 */}
-        {stage === "event" && <motion.div className="absolute inset-0 bg-black/40 z-10"
-          variants={dimmedBackground}
-          initial="hidden"
-          animate={stage === "event" ? "show" : "hidden"}
-        >
-        </motion.div>}
-
+        <AnimatePresence>
+          {eventOpen && <motion.div className="absolute inset-0 bg-black/40 z-10"
+            variants={dimmedBackground}
+            initial="hidden"
+            animate={eventOpen ? "show" : "hidden"}
+            exit='exit'
+          >
+          </motion.div>}
+        </AnimatePresence>
 
         {/* 배경 - bottom 70px 띄워서 하단 네비 공간 확보, 이 영역이 스크롤됨 */}
         <motion.div
           className="absolute top-0 left-0 right-0 bottom-[52px] overflow-y-auto overflow-x-hidden scrollbar-hide"
           variants={dimmedScale}
           initial="hidden"
-          animate={stage === "event" ? "show" : "hidden"}
+          animate={eventOpen ? "show" : "hidden"}
         >
           <Header />
           <SearchBar />
@@ -524,24 +524,22 @@ function App() {
 
           <FreeDeliverySection />
         </motion.div>
-          {stage === "event" && (
-            <EventPage
-              stage={stage}
-              setStage={setStage}
-              reviewText={reviewText}
-              setReviewText={setReviewText}
-              showLetterAnimation={showLetterAnimation}
-              setShowLetterAnimation={setShowLetterAnimation}
-              setShowAnimation={setShowAnimation}
-              showStarAnimation={showStarAnimation}
-              setShowStarAnimation={setShowStarAnimation}
-              swipeLeftRef={swipeLeftRef}
-              EventPage_State={EventPage_State}
-              setEventPage_State={setEventPage_State}
-            />
-          )}
-        <BottomNav stage={stage}/>
-        {stage === "event" && <BoottmButton EventPage_State={EventPage_State} setEventPage_State={setEventPage_State} stage={stage} reviewText={reviewText} setReviewText={setReviewText} setShowLetterAnimation={setShowLetterAnimation} showStarAnimation={showStarAnimation} setStage={setStage} showAgain={showAgain} setShowAgain={setShowAgain} swipeLeftRef={swipeLeftRef} />}
+        <EventPage
+          reviewText={reviewText}
+          setReviewText={setReviewText}
+          showLetterAnimation={showLetterAnimation}
+          setShowLetterAnimation={setShowLetterAnimation}
+          setShowAnimation={setShowAnimation}
+          showStarAnimation={showStarAnimation}
+          setShowStarAnimation={setShowStarAnimation}
+          swipeLeftRef={swipeLeftRef}
+          EventPage_State={EventPage_State}
+          setEventPage_State={setEventPage_State}
+          swipeData={swipeData}
+          setSwipeData={setSwipeData}
+        />
+        <BottomNav eventOpen={eventOpen}/>
+        {eventOpen && <BoottmButton EventPage_State={EventPage_State} setEventPage_State={setEventPage_State} eventOpen={eventOpen} reviewText={reviewText} setReviewText={setReviewText} setShowLetterAnimation={setShowLetterAnimation} showStarAnimation={showStarAnimation} showAgain={showAgain} setShowAgain={setShowAgain} swipeLeftRef={swipeLeftRef} setSwipeData={setSwipeData} />}
 
         {/* Lottie 애니메이션 오버레이 */}
         {showAnimation && (

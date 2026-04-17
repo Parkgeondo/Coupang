@@ -1,6 +1,6 @@
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, transformTemplate, useMotionValueEvent, animate } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, transformTemplate, useMotionValueEvent, animate } from 'framer-motion';
 import { useState, useEffect, useCallback } from 'react';
-import { EnterFromBottom } from '../Animation_Variants/variants';
+import { CardSwipe_transition } from '../Animation_Variants/variants';
 import Lottie from 'lottie-react';
 import lottieAnimation1 from '../Lottie/1.json';
 import lottieAnimation2 from '../Lottie/2.json';
@@ -148,10 +148,8 @@ const CardSwape = ({ Ypoint, onComplete, swipeData, setSwipeData, swipeLeftRef }
     
     
     return (
-        <AnimatePresence>
             <motion.div className="w-[343px] h-[476px] rounded-[16px] bg-gradient-to-b from-[#00AFFE] to-[#0069CC] flex flex-col items-center [perspective:9000px] overflow-hidden absolute"
-                variants={EnterFromBottom}
-                custom={Ypoint}
+                variants={CardSwipe_transition}
                 initial="hidden"
                 animate="show"
                 exit="exit"
@@ -188,7 +186,6 @@ const CardSwape = ({ Ypoint, onComplete, swipeData, setSwipeData, swipeLeftRef }
                     </motion.div>
                 </div>
             </motion.div>
-        </AnimatePresence>
     )
 }
 export default CardSwape;

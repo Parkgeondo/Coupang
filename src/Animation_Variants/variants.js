@@ -4,28 +4,48 @@ import { motion } from "./motionTokens";
   //음식 별점 타이틀 내려올때
 export const EnterFromTop = {
     show: (custom) => ({ transition: motion.spring.ui, y: `calc(${custom}vh - 50% - 290px)` }),
-    hidden: (custom) => ({ transition: motion.spring.ui, y: `-${(100 - custom)/3}vh` })
+    hidden: (custom) => ({ transition: motion.spring.ui, y: `-${(100 - custom)/3}vh` }),
+    exit: (custom) => ({ transition: motion.spring.ui, y: `-${(100 - custom)/3}vh` })
   };
 
   //x 리뷰작성 상단에서 내려올때
   export const EnterTitle = {
     show: (custom) => ({ transition: motion.spring.ui, y: `calc(${custom}vh)` }),
-    hidden: (custom) => ({ transition: motion.spring.ui, y: `-${(100 - custom)/3}vh` })
+    hidden: (custom) => ({ transition: motion.spring.ui, y: `-${(100 - custom) / 3}vh` }),
+    exit: (custom) => ({ transition: motion.spring.ui, y: `-${(100 - custom) / 3}vh` }),
   };
 
   // 카드 스와이프 아래에서 올라올떼
   export const EnterFromBottom = {
     show: (custom) => ({ transition: motion.spring.ui, y: `calc(${custom}vh - 50%)` }),
     hidden: (custom) => ({ transition: motion.spring.ui, y: "100vh" }),
-    exit: (custom) => ({ transition: { ...motion.spring.ui, delay: 0.6 }, opacity: 0
-    })
+    // exit: (custom) => ({ transition: { ...motion.spring.ui, delay: 0.6 }, opacity: 0
+    exit:  (custom) => ({ transition: motion.spring.ui, y: "100vh" }),
   };    
 
   //카드 스와이프 화면일때 배경 흐릿하게
   export const dimmedBackground = {
     show: () => ({ transition: motion.spring.ui, opacity: 1, backdropFilter: "blur(10px)"}),
-    hidden: () => ({ transition: motion.spring.ui, opacity: 0, backdropFilter: "blur(0px)"})
+    hidden: () => ({ transition: motion.spring.ui, opacity: 0, backdropFilter: "blur(0px)"}),
+    exit: () => ({ transition: motion.spring.ui, opacity: 0, backdropFilter: "blur(0px)"})
   };    
+
+  //카드 스와이프 트렌지션
+  export const CardSwipe_transition = {
+    show: (custom) => ({ transition: motion.spring.ui, opacity: 1 }),
+    hidden: (custom) => ({ transition: motion.spring.ui, opacity: 0 }),
+    exit: (custom) => ({
+      opacity: 0,
+      transition: { ...motion.spring.ui, delay: 0.6 },
+    }),
+  };
+
+  //카드 리뷰 트렌지션
+  export const Review_transition = {
+    show: (custom) => ({ transition: motion.spring.ui, opacity: 1 }),
+    hidden: (custom) => ({ transition: motion.spring.ui, opacity: 0 }),
+    exit: (custom) => ({ transition: motion.spring.ui, opacity: 0 }),
+  };
 
   //카드 스와이프 화면일때 배경 축소
   export const dimmedScale = {
@@ -74,12 +94,12 @@ export const EnterFromTop = {
           height: { ...motion.spring.ui },
           backgroundColor: { ...motion.spring.ui },
           opacity: { 
-            duration: 0.15, 
+            duration: 0.3, 
             ease: "easeOut",
             times: [0, 1],
             // x, y 이동이 대략 80% 완료된 시점에 opacity가 변하도록 delay 설정
             // spring 애니메이션의 대략적인 duration을 고려하여 delay 계산
-            delay: 0.4
+            delay: 0.3
           }
         },
         x: positionX,
@@ -90,6 +110,13 @@ export const EnterFromTop = {
         opacity: 0
       };
     },
+  };
+
+  //상단 토글 등장 삭제 애니메이션
+  export const SelectedToggles_animate = {
+    hidden: { y: "100%", transition: motion.spring.ui },
+    show: { y: 0, transition: motion.spring.ui },
+    exit: { y: "100%", transition: motion.spring.ui },
   };
 
   // 사용자님의 후기 말투를 기반으로

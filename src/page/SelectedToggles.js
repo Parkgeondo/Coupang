@@ -1,4 +1,4 @@
-import { EnterFromBottom, ToggleItem_animate } from "../Animation_Variants/variants";
+import { EnterFromBottom, SelectedToggles_animate, ToggleItem_animate } from "../Animation_Variants/variants";
 import { motion, useAnimationControls } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useResizeObserver } from "../Utile/resizeObserver";
@@ -126,10 +126,11 @@ const SelectedToggles = ({ Ypoint, swipeData, stage }) => {
 
     return (
         <motion.div className="w-[343px] h-[476px] top-[0px] absolute"
-            variants={EnterFromBottom}
-            custom={Ypoint}
+            variants={SelectedToggles_animate}
             initial="hidden"
             animate="show"
+            exit="exit"
+            
             style={{ pointerEvents: 'none' }}
         >
              {/* // 토글들이 위치하는 곳 */}

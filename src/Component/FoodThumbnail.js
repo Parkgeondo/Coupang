@@ -26,6 +26,7 @@ const FoodThumbnail = ({ Ypoint, showStarAnimation, setShowStarAnimation, swipeD
             custom={Ypoint}
             initial="hidden"
             animate="show"
+            exit="exit"
         >
         <div class="flex items-start gap-3">
           <div class="h-[71px] w-[74px] shrink-0 overflow-hidden rounded-[12px] bg-slate-200">

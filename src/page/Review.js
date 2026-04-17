@@ -1,4 +1,4 @@
-import { EnterFromBottom, skeletonAndtextarea_animate, skeleton_animate, textarea_animate, reviewTitle_text_animate_1, reviewTitle_text_animate_2, reviewTitle_text_animate_3 } from "../Animation_Variants/variants";
+import { Review_transition, skeletonAndtextarea_animate, skeleton_animate, textarea_animate, reviewTitle_text_animate_1, reviewTitle_text_animate_2, reviewTitle_text_animate_3 } from "../Animation_Variants/variants";
 import { motion, useAnimationControls } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useAnswerData, getMatchedReview } from "../Utile/getanswerdata";
@@ -64,9 +64,10 @@ const Review = ({ Ypoint, swipeData, reviewText, setReviewText, setShowStarAnima
 
     return (
         <motion.div className="w-[343px] h-[476px] rounded-[16px] bg-white flex flex-col items-center [perspective:9000px] overflow-hidden absolute p-[20px]"
-            variants={EnterFromBottom}
-            custom={Ypoint}
-            initial="show"
+            variants={Review_transition}
+            initial="hidden"
+            animate="show"
+            exit="exit"
         >
             {/* <p> 안에 <div>(motion.div) 넣으면 HTML 규칙 위반 + hydration 오류 → div 사용 */}
             <div className="text-[#222B32] text-base font-bold text-center w-full h-[42px] relative">
